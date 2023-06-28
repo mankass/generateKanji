@@ -1,8 +1,9 @@
 package application
 
+import com.example.generatekanji.domain.dto.Level
+import com.example.generatekanji.domain.dto.Word
 import com.grapecity.documents.excel.*
-import model.Level
-import model.Word
+
 import java.util.*
 
 class Table {
@@ -12,7 +13,7 @@ class Table {
 
         val worksheet = workbook.worksheets.get(0)
 
-        val columnHight: Double = 36.25
+        val columnHeight: Double = 36.25
 
         val columnsWeight: Double = 7.67
 
@@ -22,7 +23,7 @@ class Table {
         worksheet
 
         val vpr = mutableListOf<IRange>()
-        worksheet.columns.rowHeight=columnHight
+        worksheet.columns.rowHeight=columnHeight
 
 
         for (i: Int in 1..16 step 3) {
@@ -41,7 +42,7 @@ class Table {
             i.merge()
             i.horizontalAlignment=HorizontalAlignment.CenterContinuous
         }
-        val word = Word("Lol", "LOL", Level.N1,"333")
+        val word = Word("Lol", "LOL", "333",Level.N1)
 //        for (i: Int in 1..16 step 3) {
 //            worksheet.getRange("A$i:B$i").merge()
 //            worksheet.getRange("A$i:B$i").horizontalAlignment = HorizontalAlignment.CenterContinuous

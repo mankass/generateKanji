@@ -1,7 +1,7 @@
 package com.example.generatekanji.domain.dto
 
 
-data class Word(val translate:String, val word:String, val level:Level,val  id:String?) {
+data class Word(val  id:String?,val wordJapan:String, val translateWord:String, val levelN:Level,) {
 
 }
 

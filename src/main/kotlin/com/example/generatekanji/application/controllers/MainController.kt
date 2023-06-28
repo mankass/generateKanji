@@ -1,14 +1,15 @@
-package application.controllers
+package com.example.generatekanji.application.controllers
 
 import application.Table
-import model.Level
-import model.Word
+import com.example.generatekanji.domain.dto.Level
+import com.example.generatekanji.domain.dto.Word
+
 
 class MainController {
 
 
-    fun createWord(translate:String,word:String,level: Level,id:String):Word{
-         return Word(translate,word,level,id)
+    fun createWord(translate:String, word:String, level: Level, id:String):Word{
+         return Word(translate,word,id,level)
     }
 
     fun createTable(){
