@@ -3,20 +3,15 @@ POST http://localhost:8080/v1/examples/
 Content-Type: application/json
 
 {
-  "wordJapan": "12333245452111df23232323df",
-  "translateWord": "344345",
+  "wordJapan": "母",
+  "translateWord": "Mother",
   "levelN": "N5"
 }
 
-### Post "Bonjour!"
+### Получить все слова из базы!"
 
-GET http://localhost:8080/v1/examples/getall
-
-
+GET http://localhost:8080/v1/examples/get-all
 
 
-### Get all the messages
-GET http://localhost:8080/v1/examples/
-
-### Generate all
+### Сгенерировать все файлы
 POST http://localhost:8080/v1/examples/generateAll

@@ -14,7 +14,7 @@ class TableService(val db: JdbcTemplate) {
 
     val columnHeight: Double = 36.25
 
-    fun createTable(word: List<Word>): Pair<String,List<Word>> {
+    fun createTable(word: List<Word>): Pair<String, List<Word>> {
 
 
         val listUsingWords = ArrayList<Word>()
@@ -25,13 +25,6 @@ class TableService(val db: JdbcTemplate) {
 
         val workbook = Workbook()
         val worksheet = workbook.worksheets.get(0)
-//                  val wordsList: List<Word> = db.query("select * from words") { response, _ ->
-//            Word(
-//                response.getString(1), response.getString(2),
-//                response.getString(3), (Level.N1)
-//            )
-//        }
-
 
         val listOfRange = mutableListOf<IRange>()
         worksheet.columns.rowHeight = columnHeight
@@ -60,7 +53,7 @@ class TableService(val db: JdbcTemplate) {
         val reset = "\u001b[0m"
         println("$cyan$name.xlsx$reset")
         workbook.save("$name.xlsx")
-        return Pair(name,listUsingWords)
+        return Pair(name, listUsingWords)
 
 
     }

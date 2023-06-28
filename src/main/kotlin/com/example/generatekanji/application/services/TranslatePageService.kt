@@ -12,7 +12,7 @@ class TranslatePageService {
         val run=paragraph.createRun()
         for (word in pair.second){
             run.addBreak()
-            run.setText("Word:${word.wordJapan};translate:${word.translateWord}:${word.levelN}")
+            run.setText("Word:${word.wordJapan};         translate:${word.translateWord}")
         }
 
         run.fontSize=16
