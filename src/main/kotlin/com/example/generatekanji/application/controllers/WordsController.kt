@@ -3,7 +3,6 @@ package com.example.generatekanji.application.controllers
 import com.example.generatekanji.application.services.TableService
 import com.example.generatekanji.application.services.TranslatePageService
 import com.example.generatekanji.application.services.WordsService
-import com.example.generatekanji.domain.dto.Level
 import com.example.generatekanji.domain.dto.Word
 
 import io.swagger.v3.oas.annotations.Operation
@@ -21,19 +20,9 @@ class WordsController(val wordsService: WordsService, val tableService: TableSer
                       val translatePageService: TranslatePageService) {
 
 
-    val listWord:List<Word> = listOf(
-        Word("1231","word1","translate1",Level.N1),
-        Word("1232","word2","translate2",Level.N1),
-        Word("1233","word3","translate3",Level.N1),
-        Word("1234","word4","translate4",Level.N1)
-
-
-    )
-
-
-    @GetMapping("/getall")
+    @GetMapping("/get-all")
     @Operation(description = "getAllWords")
-    fun index():List<Word> = wordsService.findWords()
+    fun getALlWords():List<Word> = wordsService.findWords()
 
 
     @PostMapping("/")
@@ -42,16 +31,11 @@ class WordsController(val wordsService: WordsService, val tableService: TableSer
         wordsService.save(word)
     }
 
-//    @GetMapping("/page")
-//    @Operation(description = "CreateFile")
-//    fun getPageCreatedName():String{
-//
-//        return  tableService.createTable(listWord)
-//    }
 
     @PostMapping("/generateAll")
     fun generateAll(){
-        val fileName=tableService.createTable(listWord)
+        val listWordsFromDb=getALlWords()
+        val fileName=tableService.createTable(listWordsFromDb)
         translatePageService.createTranslatePage(fileName)
 
 

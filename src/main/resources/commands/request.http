@@ -3,8 +3,8 @@ POST http://localhost:8080/v1/examples/
 Content-Type: application/json
 
 {
-  "wordJapan": "dfdf",
-  "translateWord": "translae",
+  "wordJapan": "12333245452111df23232323df",
+  "translateWord": "344345",
   "levelN": "N5"
 }
 
