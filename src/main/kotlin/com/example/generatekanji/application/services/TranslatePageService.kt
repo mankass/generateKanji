@@ -8,8 +8,8 @@ import java.io.FileOutputStream
 class TranslatePageService {
     fun createTranslatePage(pair:Pair<String,List<Word>>):String{
         val doc=XWPFDocument()
-        val paragraraph=doc.createParagraph()
-        val run=paragraraph.createRun()
+        val paragraph=doc.createParagraph()
+        val run=paragraph.createRun()
         for (word in pair.second){
             run.addBreak()
             run.setText("Word:${word.wordJapan};translate:${word.translateWord}:${word.levelN}")

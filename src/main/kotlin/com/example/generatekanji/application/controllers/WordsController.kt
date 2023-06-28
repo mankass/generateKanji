@@ -31,7 +31,7 @@ class WordsController(val wordsService: WordsService, val tableService: TableSer
     )
 
 
-    @GetMapping("/")
+    @GetMapping("/getall")
     @Operation(description = "getAllWords")
     fun index():List<Word> = wordsService.findWords()
 
@@ -42,17 +42,17 @@ class WordsController(val wordsService: WordsService, val tableService: TableSer
         wordsService.save(word)
     }
 
-    @GetMapping("/page")
-    @Operation(description = "CreateFile")
-    fun getPageCreatedName():String{
-
-        return  tableService.createTable(listWord)
-    }
+//    @GetMapping("/page")
+//    @Operation(description = "CreateFile")
+//    fun getPageCreatedName():String{
+//
+//        return  tableService.createTable(listWord)
+//    }
 
     @PostMapping("/generateAll")
     fun generateAll(){
         val fileName=tableService.createTable(listWord)
-        translatePageService.createTranslatePage(Pair(fileName,listWord));
+        translatePageService.createTranslatePage(fileName)
 
 
     }

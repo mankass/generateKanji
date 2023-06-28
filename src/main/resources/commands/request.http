@@ -10,7 +10,7 @@ Content-Type: application/json
 
 ### Post "Bonjour!"
 
-GET http://localhost:8080/v1/examples/page
+GET http://localhost:8080/v1/examples/getall
 
 
 
