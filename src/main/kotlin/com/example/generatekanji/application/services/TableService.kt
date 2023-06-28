@@ -45,7 +45,7 @@ class TableService(val db: JdbcTemplate) {
             iRange.merge()
             iRange.horizontalAlignment = HorizontalAlignment.CenterContinuous
 
-            iRange.value = listUsingWords[count].wordJapan
+            iRange.value = listUsingWords[count].wordJapan+"   $count"
         }
         val name = UUID.randomUUID().toString()
 

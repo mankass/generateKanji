@@ -14,7 +14,7 @@ class TranslatePageService {
             run.addBreak()
             run.setText("Word:${word.wordJapan};         translate:${word.translateWord}")
         }
-
+// TODO fix порядок слов в таблице не совпадает с листом в вордей
         run.fontSize=16
         doc.write(FileOutputStream("${pair.first}.docx"))
         doc.close()
