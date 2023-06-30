@@ -4,24 +4,16 @@ import com.example.generatekanji.domain.dto.Word
 import com.grapecity.documents.excel.HorizontalAlignment
 import com.grapecity.documents.excel.IRange
 import com.grapecity.documents.excel.Workbook
-import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Service
 import java.util.*
-import kotlin.random.Random
 
 @Service
-class TableService(val db: JdbcTemplate) {
+class TableService {
 
     val columnHeight: Double = 36.25
 
     fun createTable(word: List<Word>): Pair<String, List<Word>> {
 
-
-        val listUsingWords = ArrayList<Word>()
-
-        for (i: Int in 1..60) {
-            listUsingWords.add(word[Random.nextInt(word.size)])
-        }
 
         val workbook = Workbook()
         val worksheet = workbook.worksheets.get(0)
@@ -45,7 +37,7 @@ class TableService(val db: JdbcTemplate) {
             iRange.merge()
             iRange.horizontalAlignment = HorizontalAlignment.CenterContinuous
 
-            iRange.value = listUsingWords[count].wordJapan+"   $count"
+            iRange.value = word[count].wordJapan+"   $count"
         }
         val name = UUID.randomUUID().toString()
 
@@ -53,7 +45,8 @@ class TableService(val db: JdbcTemplate) {
         val reset = "\u001b[0m"
         println("$cyan$name.xlsx$reset")
         workbook.save("$name.xlsx")
-        return Pair(name, listUsingWords)
+
+        return Pair(name, word)
 
 
     }

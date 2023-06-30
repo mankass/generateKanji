@@ -22,6 +22,7 @@ repositories {
 
 
 dependencies {
+    implementation("org.springframework.kafka:spring-kafka:3.0.8")
     implementation("org.apache.poi:poi-ooxml:5.2.3")
     implementation("org.apache.httpcomponents:httpclient:4.5.14")
     implementation("javax.xml.stream:stax-api:1.0")
