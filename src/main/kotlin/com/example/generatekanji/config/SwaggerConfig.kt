@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration
 class SwaggerConfig {
 
     @Bean
-    public fun publicAPi(): GroupedOpenApi {
+    fun publicAPi(): GroupedOpenApi {
         return GroupedOpenApi.builder()
             .group("springshop-public")
             .pathsToMatch("/public/**")

@@ -15,3 +15,16 @@ GET http://localhost:8080/v1/examples/get-all
 
 ### Сгенерировать все файлы
 POST http://localhost:8080/v1/examples/generateAll
+
+###MY SQL
+GET http://localhost:8080/v1/examples//get-all
+
+###Post mysql
+POST http://localhost:8080/v1/examples/word
+Content-Type: application/json
+
+{
+  "word": "雪",
+  "translate": "Snow",
+  "id":1
+}
