@@ -2,9 +2,7 @@ package com.example.generatekanji.application.controllers
 
 import com.example.generatekanji.application.services.TableService
 import com.example.generatekanji.application.services.TranslatePageService
-import com.example.generatekanji.application.services.WordsService
 import com.example.generatekanji.application.views.WordView
-import com.example.generatekanji.domain.dto.Word
 import com.example.generatekanji.domain.dto.WordData
 import com.example.generatekanji.infra.WordRepository
 import io.swagger.v3.oas.annotations.Operation
@@ -20,7 +18,6 @@ import java.util.*
 @Tag(name = "tag", description = "ddd")
 class WordsController(
     val wordRepository: WordRepository,
-    val wordsService: WordsService,
     val tableService: TableService,
     val translatePageService: TranslatePageService
 ) {
@@ -30,23 +27,15 @@ class WordsController(
         }
     }
 
-
-    @PostMapping("/")
-    @Operation(description = "Post new words")
-    fun post(@RequestBody word: Word) {
-        wordsService.save(word)
-    }
-
     @GetMapping("/today")
     @Operation(description = "Get all today words")
     fun getAllWordsToday(): List<WordData> {
-
-       return getAllWords().filter { wordData -> wordData.createdData == LocalDate.now() }
+        return getAllWords().filter { wordData -> wordData.createdData == LocalDate.now() }
     }
 
     @GetMapping("/generate-today")
     @Operation(description = "Get all today words")
-    fun generateToday():  ResponseEntity<String> {
+    fun generateToday(): ResponseEntity<String> {
         val listWordsFromDb = randomGenerator(getAllWordsToday()).take(60).toList()
         val stringPair = tableService.createTable(listWordsFromDb)
         translatePageService.createTranslatePage(Pair(stringPair.first, listWordsFromDb))
@@ -69,7 +58,7 @@ class WordsController(
         return wordRepository.findAll().toList()
     }
 
-    @PostMapping("/deleteall")
+    @PostMapping("/delete")
     fun deleteALl() {
         wordRepository.deleteAll()
     }
@@ -77,7 +66,7 @@ class WordsController(
     @PostMapping("/word")
     fun createWord(@Valid @RequestBody wordView: WordView) {
         val wordData =
-            WordData(wordView.word, wordView.translate, LocalDate.now(), UUID.randomUUID().toString())
+            WordData(wordView.word, wordView.translate, LocalDate.now(),wordView.transcription, UUID.randomUUID().toString())
         wordRepository.save(wordData)
     }
 

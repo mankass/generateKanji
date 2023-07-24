@@ -15,6 +15,7 @@ class WordData(
     val translate: String,
     @CreatedDate
     val createdData: LocalDate,
+    val transcription:String?,
     @Id
     @Column(name = "id")
     @GeneratedValue(generator = "system-uuid")

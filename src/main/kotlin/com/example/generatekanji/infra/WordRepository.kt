@@ -5,5 +5,4 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface WordRepository:CrudRepository<WordData,Long> {
-}
+interface WordRepository:CrudRepository<WordData,Long>
