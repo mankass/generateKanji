@@ -1,30 +1,23 @@
-### Post WORD"
-POST http://localhost:8080/v1/examples/
-Content-Type: application/json
-
-{
-  "wordJapan": "雪",
-  "translateWord": "Snow",
-  "levelN": "N5"
-}
-
-### Получить все слова из базы!"
-
-GET http://localhost:8080/v1/examples/get-all
-
+### Delete all
+POST http://localhost:8080/v1/examples/deleteall
 
 ### Сгенерировать все файлы
 POST http://localhost:8080/v1/examples/generateAll
 
 ###MY SQL
-GET http://localhost:8080/v1/examples//get-all
+GET http://localhost:8080/v1/examples/get-all
 
-###Post mysql
+### Post WORD"
 POST http://localhost:8080/v1/examples/word
 Content-Type: application/json
 
 {
-  "word": "雪",
-  "translate": "Snow",
-  "id":1
+  "word": "1",
+  "translate": "Snow2"
 }
+
+### Get Today Words
+GET http://localhost:8080/v1/examples/today
+
+### Get /generate-today Words
+GET http://localhost:8080/v1/examples//generate-today

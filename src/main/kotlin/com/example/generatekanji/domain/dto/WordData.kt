@@ -6,7 +6,7 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
 import org.hibernate.annotations.GenericGenerator
 import org.springframework.data.annotation.CreatedDate
-import java.time.Instant
+import java.time.LocalDate
 
 @Entity
 class WordData(
@@ -14,7 +14,7 @@ class WordData(
     val word: String,
     val translate: String,
     @CreatedDate
-    val createdData: Instant,
+    val createdData: LocalDate,
     @Id
     @Column(name = "id")
     @GeneratedValue(generator = "system-uuid")

@@ -1,6 +1,6 @@
 package com.example.generatekanji.application.services
 
-import com.example.generatekanji.domain.dto.Word
+import com.example.generatekanji.domain.dto.WordData
 import com.grapecity.documents.excel.HorizontalAlignment
 import com.grapecity.documents.excel.IRange
 import com.grapecity.documents.excel.Workbook
@@ -12,7 +12,7 @@ class TableService {
 
     val columnHeight: Double = 36.25
 
-    fun createTable(word: List<Word>): Pair<String, List<Word>> {
+    fun createTable(word: List<WordData>): Pair<String, List<WordData>> {
 
 
         val workbook = Workbook()
@@ -37,7 +37,7 @@ class TableService {
             iRange.merge()
             iRange.horizontalAlignment = HorizontalAlignment.CenterContinuous
 
-            iRange.value = word[count].wordJapan+"   $count"
+            iRange.value = word[count].word+"   $count"
         }
         val name = UUID.randomUUID().toString()
 
