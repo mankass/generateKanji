@@ -33,6 +33,13 @@ class WordsController(
         return getAllWords().filter { wordData -> wordData.createdData == LocalDate.now() }
     }
 
+
+    @GetMapping("/yesterday")
+    @Operation(description = "Get all Yesterday words")
+    fun getAllWordsYesterday(): List<WordData> {
+        return getAllWords().filter { wordData -> wordData.createdData == LocalDate.now().minusDays(1) }
+    }
+
     @GetMapping("/generate-today")
     @Operation(description = "Get all today words")
     fun generateToday(): ResponseEntity<String> {
