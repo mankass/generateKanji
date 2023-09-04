@@ -22,3 +22,6 @@ GET http://localhost:8080/v1/examples/today
 
 ### Get /generate-today Words
 GET http://localhost:8080/v1/examples/generate-today
+
+
+GET http://localhost:8080/v1/examples/yesterday
