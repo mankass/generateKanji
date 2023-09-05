@@ -1,5 +1,6 @@
 package com.example.generatekanji.domain.dto
 
+import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -9,10 +10,14 @@ import org.springframework.data.annotation.CreatedDate
 import java.time.LocalDate
 
 @Entity
+@Schema(description = "wordData")
 class WordData(
 
+    @Schema(description = "word")
     val word: String,
+    @Schema(description = "translate")
     val translate: String,
+    @Schema(description = "createdData")
     @CreatedDate
     val createdData: LocalDate,
     val transcription:String?,

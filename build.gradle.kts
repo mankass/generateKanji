@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm") version "1.8.21"
     kotlin("plugin.spring") version "1.8.21"
     kotlin("plugin.jpa") version "1.8.21"
+    id("org.openapi.generator") version "7.0.0"
     application
 }
 
@@ -23,8 +24,13 @@ repositories {
 
 dependencies {
 // https://mvnrepository.com/artifact/mysql/mysql-connector-java
-    implementation("mysql:mysql-connector-java:8.0.33")
+    implementation("org.springframework.boot:spring-boot-starter-actuator:3.1.0")
+    implementation("org.springframework.boot:spring-boot-starter-validation:3.1.0")
 
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+
+
+    implementation("mysql:mysql-connector-java:8.0.33")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.springframework.kafka:spring-kafka:3.0.8")
@@ -45,8 +51,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.springdoc:springdoc-openapi-ui:1.6.14")
-    implementation("org.springdoc:springdoc-openapi-webflux-ui:1.6.14")
     runtimeOnly("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
@@ -72,3 +76,28 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            url = uri("https://plugins.gradle.org/m2/")
+        }
+    }
+    dependencies {
+        classpath("org.openapitools:openapi-generator-gradle-plugin:7.0.0")
+    }
+}
+
+
+openApiGenerate {
+    generatorName.set("kotlin")
+    inputSpec.set("C:\\Users\\Даниил\\AppData\\Roaming\\JetBrains\\IntelliJIdea2022.3\\openApiExport\\generateKanji-openapi.yaml")
+    outputDir.set("$buildDir/generated")
+    apiPackage.set("com.example.generatekanji.application.controllers")
+    modelPackage.set("com.example.generatekanji.application.controllers")
+}
+
+apply(plugin = "org.openapi.generator")
+

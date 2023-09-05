@@ -14,7 +14,7 @@ import java.time.LocalDate
 import java.util.*
 
 @RestController
-@RequestMapping("/v1/examples")
+@RequestMapping("/words")
 @Tag(name = "tag", description = "ddd")
 class WordsController(
     val wordRepository: WordRepository,
