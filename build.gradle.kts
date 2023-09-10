@@ -26,8 +26,11 @@ dependencies {
 // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     implementation("org.springframework.boot:spring-boot-starter-actuator:3.1.0")
     implementation("org.springframework.boot:spring-boot-starter-validation:3.1.0")
+    implementation("org.springframework.boot:spring-boot-starter-security:3.1.3")
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+    implementation("org.springframework.boot:spring-boot-starter-security:2.7.12")
+    implementation("io.jsonwebtoken:jjwt:0.9.1")
 
 
     implementation("mysql:mysql-connector-java:8.0.33")

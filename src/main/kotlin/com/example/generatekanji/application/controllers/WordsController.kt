@@ -14,8 +14,9 @@ import java.time.LocalDate
 import java.util.*
 
 @RestController
-@RequestMapping("/words")
-@Tag(name = "tag", description = "ddd")
+@RequestMapping("api/web-client")
+@CrossOrigin
+@Tag(name = "API", description = "ddd")
 class WordsController(
     val wordRepository: WordRepository,
     val tableService: TableService,
@@ -68,6 +69,12 @@ class WordsController(
         val wordData =
             WordData(wordView.word, wordView.translate, LocalDate.now(),wordView.transcription, UUID.randomUUID().toString())
         wordRepository.save(wordData)
+    }
+
+    @GetMapping("/getFile")
+    @ResponseBody
+    fun downloadGeneratedFiles(){
+
     }
 
 
