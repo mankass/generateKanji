@@ -1,6 +1,7 @@
 package com.example.generatekanji.config
 
 import com.example.generatekanji.application.services.UserService
+import jakarta.servlet.DispatcherType
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
@@ -26,16 +27,17 @@ class SecurityConfig(val userService: UserService,val jwtRequestFilter: JwtReque
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http.authorizeHttpRequests { auth ->
-            auth.requestMatchers("/signin", "/signup").hasRole("ADMIN")
-                .requestMatchers("web-client/**").hasRole("ADMIN")
-//                .requestMatchers("/api").permitAll()
+            auth.requestMatchers("/signin", "/signup").permitAll()
+                .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+                .requestMatchers("web-client/**").permitAll()
+                .requestMatchers("/api").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/v2/api-docs",
                     "/v3/api-docs",
                     "/swagger-resources/**",
                     "/swagger-ui/**",
                     "/api-docs/**").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
 
         }
             .formLogin { formLogin ->

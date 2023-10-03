@@ -9,6 +9,10 @@
     "lint": "eslint --ext .js,.vue ./",
     "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
+    "generate:web-client-api": "curl http://localhost:8080/api-docs/web-client-api > openapi.web-client-api.json",
+    "generate:security": "curl http://localhost:8080/api-docs/security > openapi.security.json",
+    "generate:all": "npm run generate:security && npm run generate:web-client-api",
+    "generate:client-ts": "openapi-generator-cli generate -g typescript-fetch -o ../generated/ -i openapi.web-client-api.json ",
     "dev": "quasar dev",
     "build": "quasar build"
   },

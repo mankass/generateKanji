@@ -18,7 +18,7 @@
       >
         <q-scroll-area class="fit">
           <q-list padding class="menu-list">
-            <q-item href="http://localhost:9000/#/allw" clickable v-ripple>
+            <q-item href="http://localhost:9000/#/all" clickable v-ripple>
               <q-item-section avatar>
                 <q-icon name="inbox" />
               </q-item-section>
@@ -44,27 +44,16 @@
 
             <q-item clickable v-ripple>
               <q-item-section avatar>
-                <q-icon name="folder_copy" />
+                <q-icon name="drafts" />
               </q-item-section>
 
-              <q-item-section> Decks </q-item-section>
+              <q-item-section> Drafts </q-item-section>
             </q-item>
           </q-list>
         </q-scroll-area>
       </q-drawer>
 
       <q-page-container>
-<!--              <q-btn  color="red" @click="getWords()"></q-btn>-->
-        <!--      <q-btn  color="red" to="/all"></q-btn>-->
-
-        <q-list dense padding class="rounded-borders" wor>
-          <q-item v-for="word in wordsList">
-            <q-item-section>
-              {{ word.word }}
-            </q-item-section>
-          </q-item>
-        </q-list>
-
         <router-view />
       </q-page-container>
     </q-layout>
@@ -78,7 +67,7 @@ import {
   APIApi,
   Configuration,
   WordData,
-} from "../../../generated/";
+} from "../../../generated";
 import { safe } from "../../../generated/client-sdk";
 
 const api = new APIApi();

@@ -12,7 +12,7 @@ class TableService {
 
     val columnHeight: Double = 36.25
 
-    fun createTable(word: List<WordData>): Pair<String, List<WordData>> {
+    fun createTable(word: List<WordData>,string: String): Pair<String, List<WordData>> {
 
 
         val workbook = Workbook()
@@ -36,15 +36,16 @@ class TableService {
         for ((count, iRange: IRange) in listOfRange.withIndex()) {
             iRange.merge()
             iRange.horizontalAlignment = HorizontalAlignment.CenterContinuous
-
+            iRange.rowHeight=17.00
             iRange.value = word[count].word+"   $count"
+
         }
         val name = UUID.randomUUID().toString()
 
         val cyan = "\u001B[36m"
         val reset = "\u001b[0m"
         println("$cyan$name.xlsx$reset")
-        workbook.save("$name.xlsx")
+        workbook.save("$string$name.xlsx")
 
         return Pair(name, word)
 

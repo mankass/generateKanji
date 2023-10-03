@@ -1,4 +1,4 @@
-package com.example.generatekanji.application.controllers
+package com.example.generatekanji.presentation.controllers
 
 import com.example.generatekanji.application.services.SecurityService
 import com.example.generatekanji.domain.dto.UserData
