@@ -1,6 +1,6 @@
 <template>
-  <div class="q-pa-md">
-    <q-layout view="hHh Lpr fFf">
+  <div>
+    <q-layout class="back">
       <q-header elevated>
         <q-toolbar>
           <q-btn flat @click="drawer = !drawer" round dense icon="menu"></q-btn>
@@ -23,10 +23,10 @@
                 <q-icon name="inbox" />
               </q-item-section>
 
-              <q-item-section> ALl words </q-item-section>
+              <q-item-section> All words </q-item-section>
             </q-item>
 
-            <q-item href="http://localhost:9000/#/" active clickable v-ripple>
+            <q-item href="http://localhost:9000/#/" clickable v-ripple>
               <q-item-section avatar>
                 <q-icon name="star" />
               </q-item-section>
@@ -34,15 +34,15 @@
               <q-item-section> Home </q-item-section>
             </q-item>
 
-            <q-item clickable v-ripple>
+            <q-item href="http://localhost:9000/#/generator" clickable v-ripple>
               <q-item-section avatar>
                 <q-icon name="send" />
               </q-item-section>
 
-              <q-item-section> Send </q-item-section>
+              <q-item-section> Generator </q-item-section>
             </q-item>
 
-            <q-item clickable v-ripple>
+            <q-item href="http://localhost:9000/#/decks" clickable v-ripple>
               <q-item-section avatar>
                 <q-icon name="folder_copy" />
               </q-item-section>
@@ -53,20 +53,7 @@
         </q-scroll-area>
       </q-drawer>
 
-      <q-page-container>
-<!--              <q-btn  color="red" @click="getWords()"></q-btn>-->
-        <!--      <q-btn  color="red" to="/all"></q-btn>-->
-
-        <q-list dense padding class="rounded-borders" wor>
-          <q-item v-for="word in wordsList">
-            <q-item-section>
-              {{ word.word }}
-            </q-item-section>
-          </q-item>
-        </q-list>
-
-        <router-view />
-      </q-page-container>
+      <router-view />
     </q-layout>
   </div>
 </template>
@@ -74,11 +61,7 @@
 <script lang="ts" setup>
 import { defineComponent, Ref, ref } from "vue";
 import EssentialLink from "components/Header.vue";
-import {
-  APIApi,
-  Configuration,
-  WordData,
-} from "../../../generated/";
+import { APIApi, Configuration, WordData } from "../../../generated/";
 import { safe } from "../../../generated/client-sdk";
 
 const api = new APIApi();
@@ -101,3 +84,10 @@ async function getWords() {
   );
 }
 </script>
+
+<style lang="sass" scoped>
+
+
+.back
+  background: rgba(127, 255, 212, 0.22)
+</style>

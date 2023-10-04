@@ -2,7 +2,7 @@
   "name": "kanji-web",
   "version": "0.0.1",
   "description": "Kanji",
-  "productName": "Quasar App",
+  "productName": "Kanji Learner",
   "author": "Даниил <salakhetdinod@mail.ru>",
   "private": true,
   "scripts": {
@@ -12,6 +12,7 @@
     "generate:web-client-api": "curl http://localhost:8080/api-docs/web-client-api > openapi.web-client-api.json",
     "generate:security": "curl http://localhost:8080/api-docs/security > openapi.security.json",
     "generate:all": "npm run generate:security && npm run generate:web-client-api",
+    "generete:main": "npm run generate:all && npm run generate:client-ts",
     "generate:client-ts": "openapi-generator-cli generate -g typescript-fetch -o ../generated/ -i openapi.web-client-api.json ",
     "dev": "quasar dev",
     "build": "quasar build"

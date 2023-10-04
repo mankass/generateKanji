@@ -63,11 +63,7 @@
 <script lang="ts" setup>
 import { defineComponent, Ref, ref } from "vue";
 import EssentialLink from "components/Header.vue";
-import {
-  APIApi,
-  Configuration,
-  WordData,
-} from "../../../generated";
+import { APIApi, Configuration, WordData } from "../../../generated";
 import { safe } from "../../../generated/client-sdk";
 
 const api = new APIApi();
