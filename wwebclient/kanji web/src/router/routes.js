@@ -3,9 +3,10 @@ const routes = [
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
     children: [
-      { path: "", component: () => import("pages/IndexPage.vue") },
+      { path: "", component: () => import("pages/MainPage.vue") },
       { path: "/allw", component: () => import("pages/AllWords.vue") },
       { path: "/decks", component: () => import("pages/DecksPage.vue") },
+      { path: "/user", component: () => import("pages/UserPage.vue") },
       {
         path: "/generator",
         component: () => import("pages/GeneratorPage.vue"),
@@ -15,12 +16,6 @@ const routes = [
   {
     path: "/all",
     component: () => import("layouts/AllWords.vue"),
-    children: [],
-  },
-
-  {
-    path: "/client",
-    component: () => import("pages/UserPage.vue"),
     children: [],
   },
 

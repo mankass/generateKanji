@@ -2,29 +2,25 @@
   <q-page-container>
     <div class="q-pa-md row items-start q-gutter-md">
       <div class="col-3">
-
-
         <q-card class="my-card q-ma-md bg-secondary text-white">
           <q-card-section>
-            <div> Generate today</div>
+            <div>Generate today</div>
           </q-card-section>
           <q-separator dark></q-separator>
           <q-card-actions class="q-pa-sm-md">
-            <q-btn class="button" @click="generateToday" >Download</q-btn>
+            <q-btn class="button" @click="generateToday">Download</q-btn>
           </q-card-actions>
         </q-card>
 
         <q-card class="my-card q-ma-md bg-secondary text-white">
           <q-card-section>
-            <div>  Generate by difficult</div>
+            <div>Generate by difficult</div>
           </q-card-section>
           <q-separator dark></q-separator>
           <q-card-actions class="q-pa-sm-md">
-            <q-btn class="button" >Download</q-btn>
+            <q-btn class="button">Download</q-btn>
           </q-card-actions>
         </q-card>
-
-
       </div>
 
       <div class="col">
@@ -33,8 +29,8 @@
             <div>Generate by deck</div>
           </q-card-section>
           <q-separator dark></q-separator>
-          <q-card-actions class="q-pa-sm-md">
-            <q-btn class="button" >Download</q-btn>
+          <q-card-actions class="q-pt-lg-xs">
+            <q-btn class="button">Download</q-btn>
           </q-card-actions>
         </q-card>
         <q-card class="my-card q-ma-md bg-secondary text-white">
@@ -43,10 +39,9 @@
           </q-card-section>
           <q-separator dark></q-separator>
           <q-card-actions class="q-pa-sm-md">
-            <q-btn class="button" >Download</q-btn>
+            <q-btn class="button">Download</q-btn>
           </q-card-actions>
         </q-card>
-
       </div>
 
       <div class=""></div>
@@ -55,35 +50,20 @@
 </template>
 
 <script lang="ts" setup>
-
-import {APIApi, DeckAPIApi} from "../../../generated";
+import { APIApi, DeckAPIApi } from "../../../generated";
 
 const api = new APIApi();
 const deckAPIApi = new DeckAPIApi();
 
+function generateToday() {
+  api.downloadAllToday();
+}
 
-  function generateToday(){
-    api.generateToday()
-  }
+function generateByDifficult() {}
 
-  function generateByDifficult(){
+function generateByDeck() {}
 
-  }
-
-  function generateByDeck(){
-
-  }
-
-  function generateAll(){
-
-  }
-
-
-
-
-
-
-
+function generateAll() {}
 </script>
 
 <style lang="sass" scoped>
@@ -93,5 +73,4 @@ const deckAPIApi = new DeckAPIApi();
   height: 200px
 .button
   background: #72a407
-
 </style>

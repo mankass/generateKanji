@@ -13,7 +13,7 @@ class TranslatePageService {
         var i=0
         for (word in pair.second){
             run.addBreak()
-            run.setText("${i}Word:${word.word} -[${word.transcription}] - translate:${word.translate} ")
+            run.setText("${i}-Word:${word.word} -[${word.transcription}] -:${word.translate} ")
             i++;
         }
 

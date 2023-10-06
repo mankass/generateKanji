@@ -5,6 +5,13 @@
         <q-toolbar>
           <q-btn flat @click="drawer = !drawer" round dense icon="menu"></q-btn>
           <q-toolbar-title>KanjiLearner</q-toolbar-title>
+          <q-btn
+            class="q-mr-lg"
+            icon="camera_front"
+            href="http://localhost:9000/#/user"
+          >
+          </q-btn>
+          <q-btn> Log in</q-btn>
         </q-toolbar>
       </q-header>
 
@@ -60,29 +67,10 @@
 
 <script lang="ts" setup>
 import { defineComponent, Ref, ref } from "vue";
-import EssentialLink from "components/Header.vue";
 import { APIApi, Configuration, WordData } from "../../../generated/";
-import { safe } from "../../../generated/client-sdk";
 
 const api = new APIApi();
-const wordsList = ref<WordData[]>();
 const drawer = ref(true);
-const miniState = ref(true);
-async function getWords() {
-  await safe(
-    async () => {
-      try {
-        console.log(wordsList.value);
-        console.log("console");
-        wordsList.value = await api.getAllWords();
-        console.log(wordsList.value);
-      } finally {
-        console.log("final");
-      }
-    },
-    { loading: false }
-  );
-}
 </script>
 
 <style lang="sass" scoped>

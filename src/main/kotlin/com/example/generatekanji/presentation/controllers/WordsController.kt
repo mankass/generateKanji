@@ -2,8 +2,10 @@ package com.example.generatekanji.presentation.controllers
 
 import com.example.generatekanji.application.services.TableService
 import com.example.generatekanji.application.services.TranslatePageService
+import com.example.generatekanji.application.services.WordService
 import com.example.generatekanji.application.views.WordView
 import com.example.generatekanji.domain.dto.WordData
+import com.example.generatekanji.domain.view.RandomWordView
 import com.example.generatekanji.infra.WordRepository
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -33,6 +35,7 @@ import kotlin.io.path.Path
 @Tag(name = "API", description = "ddd")
 class WordsController(
     val wordRepository: WordRepository,
+    val wordService: WordService,
     val tableService: TableService,
     val translatePageService: TranslatePageService
 ) {
@@ -42,16 +45,22 @@ class WordsController(
         }
     }
 
-    @GetMapping("/today")
-    @Operation(description = "Get all today words")
-    fun getAllWordsToday(): List<WordData> {
-        return getAllWords().filter { wordData -> wordData.createdData == LocalDate.now() }
+    @GetMapping("/day")
+    @Operation(description = "Get all words by date")
+    fun getAllWordsToday(localDate: LocalDate): List<WordData> {
+       return wordService.getWordsByDate(localDate)
+    }
+
+    @GetMapping("/random")
+    @Operation(description = "Get Random")
+    fun getRandomWord(): RandomWordView{
+         return wordService.getRandom()
     }
 
     @GetMapping("/generate-today")
     @Operation(description = "Get all today words")
     fun generateToday(): ResponseEntity<String> {
-        val listWordsFromDb = randomGenerator(getAllWordsToday()).take(60).toList()
+        val listWordsFromDb = randomGenerator(getAllWordsToday(LocalDate.now())).take(60).toList()
         val stringPair = tableService.createTable(listWordsFromDb,"today")
         translatePageService.createTranslatePage(Pair(stringPair.first, listWordsFromDb))
         return ResponseEntity.ok(stringPair.first)
@@ -70,7 +79,7 @@ class WordsController(
     @GetMapping("/get-all")
     @Operation(description = "getAllWords")
     fun getAllWords(): List<WordData> {
-        return wordRepository.findAll().toList()
+        return wordService.getAllWords()
     }
 
     @PostMapping("/delete")
@@ -102,11 +111,13 @@ class WordsController(
     }
 
     @GetMapping("/getAllToday")
+    @Operation(description = "downloadToday")
     fun downloadAllToday(): ResponseEntity<ByteArrayResource> {
         val filename = generateToday().body
 
-        val list = listOf("C:\\Users\\Даниил\\IdeaProjects\\generateKanji_new\\183f999e-47bd-4591-a098-79e6c3885205.xlsx",
-            "C:\\Users\\Даниил\\IdeaProjects\\generateKanji_new\\183f999e-47bd-4591-a098-79e6c3885205.docx")
+        val list = listOf(
+            "C:\\Users\\Даниил\\IdeaProjects\\generateKanji_new\\3bfbad49-ef8b-408c-9ea8-7072dd6de9c7.docx",
+            "C:\\Users\\Даниил\\IdeaProjects\\generateKanji_new\\allb0a960ae-7968-4422-9301-713216190b93.xlsx")
         val byteArrayOutputStream = ByteArrayOutputStream()
         val bufferedOutputStream = BufferedOutputStream(byteArrayOutputStream)
         val zipOutputStream = ZipOutputStream(bufferedOutputStream)

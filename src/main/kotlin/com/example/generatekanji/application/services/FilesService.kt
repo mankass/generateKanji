@@ -8,18 +8,19 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class TableService {
+class FilesService {
 
-    val columnHeight: Double = 36.25
 
-    fun createTable(word: List<WordData>,string: String): Pair<String, List<WordData>> {
+    fun createAll(){
 
+    }
+    fun createTable(wordList:List<WordData>,nameFile:String) {
 
         val workbook = Workbook()
         val worksheet = workbook.worksheets.get(0)
 
         val listOfRange = mutableListOf<IRange>()
-        worksheet.columns.rowHeight = columnHeight
+        worksheet.columns.rowHeight = 36.25
 
         for (i: Int in 1..16 step 3) {
             listOfRange.add(worksheet.getRange("A$i:B$i"))
@@ -39,7 +40,7 @@ class TableService {
             iRange.rowHeight=17.00
             iRange.font.size=14.00
             iRange.font.bold=true
-            iRange.value = word[count].word+"   $count"
+            iRange.value = wordList[count].word+"   $count"
 
         }
         val name = UUID.randomUUID().toString()
@@ -47,10 +48,11 @@ class TableService {
         val cyan = "\u001B[36m"
         val reset = "\u001b[0m"
         println("$cyan$name.xlsx$reset")
-        workbook.save("$string$name.xlsx")
+        workbook.save("$name$name.xlsx")
 
-        return Pair(name, word)
+    }
 
+    fun createAnswers(){
 
     }
 
