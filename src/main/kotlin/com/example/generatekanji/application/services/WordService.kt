@@ -16,19 +16,33 @@ class WordService(
             words.shuffled().forEach { yield(it) }
         }
     }
+
+    fun <T> shuffle(list: MutableList<T>) {
+        list.shuffle()
+    }
+
     fun getRandom(): RandomWordView {
         val all = wordRepository.findAll().toList()
-        val word=all[Random.nextInt(all.size)]
-        return RandomWordView(word.word,word.translate,all[Random.nextInt(all.size)].transcription,
-            all[Random.nextInt(all.size)].transcription,all[Random.nextInt(all.size)].transcription,
-            all[Random.nextInt(all.size)].transcription)
+        val word = all[Random.nextInt(all.size)]
+        val listAnswers = mutableListOf(
+            all[Random.nextInt(all.size)].transcription,
+            all[Random.nextInt(all.size)].transcription,
+            all[Random.nextInt(all.size)].transcription, word.transcription
+        )
+        shuffle(listAnswers)
+
+        return RandomWordView(word.word, word.translate, word.transcription, listAnswers)
     }
 
     fun getWordsByDate(localDate: LocalDate): List<WordData> {
-       return wordRepository.findAll().toList().filter { wordData -> wordData.createdData == localDate }
+        return wordRepository.findAll().toList().filter { wordData -> wordData.createdData == localDate }
     }
 
     fun getAllWords(): List<WordData> {
         return wordRepository.findAll().toList()
+    }
+
+    fun generateRandomWordsList(): List<WordData> {
+        return randomGenerator(getAllWords()).take(60).toList()
     }
 }

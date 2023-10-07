@@ -4,17 +4,27 @@ import com.example.generatekanji.domain.dto.WordData
 import com.grapecity.documents.excel.HorizontalAlignment
 import com.grapecity.documents.excel.IRange
 import com.grapecity.documents.excel.Workbook
+import org.apache.poi.xwpf.usermodel.XWPFDocument
 import org.springframework.stereotype.Service
+import java.io.File
+import java.io.FileOutputStream
 import java.util.*
 
 @Service
 class FilesService {
 
 
-    fun createAll(){
-
+    fun createAll(wordList: List<WordData>) {
+        val directoryName = UUID.randomUUID().toString().substring(1,20)
+        val path="C:\\Users\\Даниил\\IdeaProjects\\generateKanji_new\\src\\main\\resources\\files\\${directoryName}"
+        val  resultMkdir=
+            File("C:\\Users\\Даниил\\IdeaProjects\\generateKanji_new\\src\\main\\resources\\files\\${directoryName}").mkdir()
+        println(resultMkdir)
+        createTable(wordList, path)
+        createAnswers(wordList, path)
     }
-    fun createTable(wordList:List<WordData>,nameFile:String) {
+
+    fun createTable(wordList: List<WordData>, nameFile: String) {
 
         val workbook = Workbook()
         val worksheet = workbook.worksheets.get(0)
@@ -37,23 +47,29 @@ class FilesService {
         for ((count, iRange: IRange) in listOfRange.withIndex()) {
             iRange.merge()
             iRange.horizontalAlignment = HorizontalAlignment.CenterContinuous
-            iRange.rowHeight=17.00
-            iRange.font.size=14.00
-            iRange.font.bold=true
-            iRange.value = wordList[count].word+"   $count"
+            iRange.rowHeight = 17.00
+            iRange.font.size = 14.00
+            iRange.font.bold = true
+            iRange.value = wordList[count].word + "   $count"
 
         }
-        val name = UUID.randomUUID().toString()
-
-        val cyan = "\u001B[36m"
-        val reset = "\u001b[0m"
-        println("$cyan$name.xlsx$reset")
-        workbook.save("$name$name.xlsx")
-
+        workbook.save("//$nameFile.xlsx")
     }
 
-    fun createAnswers(){
+    fun createAnswers(wordList: List<WordData>, nameFile: String) {
+        val doc = XWPFDocument()
+        val paragraph = doc.createParagraph()
+        val run = paragraph.createRun()
+        for ((i, word) in wordList.withIndex()) {
+            run.addBreak()
+            run.setText("${i}-Word:${word.word} -[${word.transcription}] -:${word.translate} ")
+        }
 
+        run.fontSize = 16
+        val fileOutputStream = FileOutputStream("${nameFile}.docx")
+        doc.write(fileOutputStream)
+        fileOutputStream.close()
+        doc.close()
     }
 
 }
