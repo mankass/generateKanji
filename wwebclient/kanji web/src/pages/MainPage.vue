@@ -3,6 +3,7 @@
     <q-card class="random-word" v-if="randomWord != undefined">
       <div class="question-container">
         <q-card class="question"> {{ randomWord.word }}</q-card>
+
         <q-toggle v-model="showHintWord" dense class="hint">
           Показать перевод
         </q-toggle
@@ -86,6 +87,7 @@ function checkAnswer(answer: string) {
       timeout: 22,
     });
   } else {
+    showHintWord.value = true
     return $q.notify({
       message: "Answer incorrect.",
       color: "red",
@@ -103,6 +105,7 @@ function randomTranslateQuiz(answer: string) {
       timeout: 22,
     });
   } else {
+    showHintTranslate.value = true
     return $q.notify({
       message: "Answer incorrect.",
       color: "red",
