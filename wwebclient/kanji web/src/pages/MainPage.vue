@@ -4,17 +4,18 @@
       <div class="question-container">
         <q-card class="question"> {{ randomWord.word }}</q-card>
         <q-toggle v-model="showHintWord" dense class="hint">
-          Показать перевод</q-toggle
+          Показать перевод
+        </q-toggle
         >
-        <q-card  class="question" v-if="showHintWord">
-          {{randomWord.translate}}
+        <q-card class="question" v-if="showHintWord">
+          {{ randomWord.translate }}
         </q-card>
       </div>
       <q-card-actions
         class="row q-pt-lg inline"
         v-for="answer in randomWord.answers"
       >
-        <q-btn @click="checkAnswer(answer)"> {{ answer }} </q-btn>
+        <q-btn @click="checkAnswer(answer)"> {{ answer }}</q-btn>
       </q-card-actions>
       <div class="q-pa-lg">
         <q-btn class="button-text" @click="getRandomWord"> Next word</q-btn>
@@ -25,10 +26,11 @@
       <div class="question-container">
         <q-card class="question"> {{ randomTranslateWordView.word }}</q-card>
         <q-toggle v-model="showHintTranslate" dense class="hint">
-          Показать транскрипцию</q-toggle
+          Показать транскрипцию
+        </q-toggle
         >
-        <q-card  class="question" v-if="showHintTranslate">
-          {{randomTranslateWordView.transcription}}
+        <q-card class="question" v-if="showHintTranslate">
+          {{ randomTranslateWordView.transcription }}
         </q-card>
       </div>
       <q-card-actions
@@ -41,7 +43,8 @@
       </q-card-actions>
       <div class="q-pa-lg">
         <q-btn class="button-text" @click="getRandomTranslateWordView">
-          Next word</q-btn
+          Next word
+        </q-btn
         >
       </div>
     </q-card>
@@ -55,8 +58,8 @@ import {
   RandomWordView,
   WordData,
 } from "../../../generated";
-import { ref } from "vue";
-import { useQuasar } from "quasar";
+import {ref} from "vue";
+import {useQuasar} from "quasar";
 
 const api = new APIApi();
 const randomWord = ref<RandomWordView>();
@@ -74,8 +77,9 @@ async function getRandomTranslateWordView() {
 }
 
 function checkAnswer(answer: string) {
-  if (randomWord.value.correctAnswer===answer) {
+  if (randomWord.value.correctAnswer === answer) {
     getRandomWord()
+    showHintWord.value = false
     return $q.notify({
       message: "Answer correct.",
       color: "secondary",
@@ -90,7 +94,8 @@ function checkAnswer(answer: string) {
 }
 
 function randomTranslateQuiz(answer: string) {
-  if (randomTranslateWordView.value.correctAnswer===answer) {
+  if (randomTranslateWordView.value.correctAnswer === answer) {
+    showHintTranslate.value = false
     getRandomTranslateWordView()
     return $q.notify({
       message: "Answer correct.",

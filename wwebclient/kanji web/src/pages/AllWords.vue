@@ -1,6 +1,6 @@
 <template>
   <q-page-container>
-    <q-card class="q-ma-md">
+    <q-card class="q-ma-md container-buttons">
       <q-btn class="q-ma-xs" color="green" @click="dialogNew = true">
         add new word</q-btn
       >
@@ -71,3 +71,34 @@ async function getAllWords() {
 
 getAllWords();
 </script>
+
+<style lang="sass" scoped>
+
+.container-buttons
+  background: #f2c037
+  color: black
+
+.button-text
+  background: #21ba45
+  color: bisque
+
+.controller
+  display: flex
+  justify-content: space-between
+  height: 200px
+
+.container
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+
+.question
+  display: inline-block
+  background: #5799f5
+  font-size: 40px
+  margin-right: 10px
+
+.question-container
+  margin-left: 40px
+  margin-top: 40px
+</style>
