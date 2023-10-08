@@ -1,8 +1,8 @@
 <template>
   <q-page-container>
-    <div class="q-pa-md row items-start q-gutter-md">
-      <div class="col-3">
-        <q-card class="my-card q-ma-md bg-secondary text-white">
+    <div class="q-pa-md row items-start q-gutter-md controller">
+      <div class="col-3 inline-block">
+        <q-card class="q-ma-md bg-secondary text-white container">
           <q-card-section>
             <div>Generate today</div>
           </q-card-section>
@@ -12,7 +12,7 @@
           </q-card-actions>
         </q-card>
 
-        <q-card class="my-card q-ma-md bg-secondary text-white">
+        <q-card class="q-ma-md bg-secondary text-white container">
           <q-card-section>
             <div>Generate by difficult</div>
           </q-card-section>
@@ -24,7 +24,7 @@
       </div>
 
       <div class="col">
-        <q-card class="my-card q-ma-md bg-secondary text-white">
+        <q-card class="q-ma-md bg-secondary text-white container">
           <q-card-section>
             <div>Generate by deck</div>
           </q-card-section>
@@ -33,7 +33,7 @@
             <q-btn class="button">Download</q-btn>
           </q-card-actions>
         </q-card>
-        <q-card class="my-card q-ma-md bg-secondary text-white">
+        <q-card class="q-ma-md bg-secondary text-white container">
           <q-card-section>
             <div>Generate ALl</div>
           </q-card-section>

@@ -1,6 +1,7 @@
 package com.example.generatekanji.application.services
 
 import com.example.generatekanji.domain.dto.WordData
+import com.example.generatekanji.domain.view.RandomTranslateWordView
 import com.example.generatekanji.domain.view.RandomWordView
 import com.example.generatekanji.infra.WordRepository
 import org.springframework.stereotype.Service
@@ -22,12 +23,13 @@ class WordService(
     }
 
     fun getRandom(): RandomWordView {
-        val all = wordRepository.findAll().toList()
+        val all = getAllWords()
         val word = all[Random.nextInt(all.size)]
         val listAnswers = mutableListOf(
             all[Random.nextInt(all.size)].transcription,
             all[Random.nextInt(all.size)].transcription,
-            all[Random.nextInt(all.size)].transcription, word.transcription
+            all[Random.nextInt(all.size)].transcription,
+            word.transcription
         )
         shuffle(listAnswers)
 
@@ -44,5 +46,19 @@ class WordService(
 
     fun generateRandomWordsList(): List<WordData> {
         return randomGenerator(getAllWords()).take(60).toList()
+    }
+
+    fun getRandomTranslateQuiz(): RandomTranslateWordView {
+        val all = getAllWords()
+        val word = all[Random.nextInt(all.size)]
+        val listAnswers = mutableListOf(
+            all[Random.nextInt(all.size)].translate,
+            all[Random.nextInt(all.size)].translate,
+            all[Random.nextInt(all.size)].translate,
+            word.translate
+        )
+        shuffle(listAnswers)
+
+        return RandomTranslateWordView(word.word, word.translate, word.transcription, listAnswers)
     }
 }

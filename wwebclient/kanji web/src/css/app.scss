@@ -1,1 +1,13 @@
 // app global css in SCSS form
+
+.controller {
+  display: flex;
+  justify-content: space-between;
+  height: 200px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

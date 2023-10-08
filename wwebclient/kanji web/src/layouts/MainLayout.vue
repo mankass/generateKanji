@@ -77,5 +77,5 @@ const drawer = ref(true);
 
 
 .back
-  background: rgba(127, 255, 212, 0.22)
+  background: #009B4D
 </style>

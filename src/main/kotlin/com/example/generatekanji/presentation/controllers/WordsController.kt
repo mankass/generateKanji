@@ -5,6 +5,7 @@ import com.example.generatekanji.application.services.TranslatePageService
 import com.example.generatekanji.application.services.WordService
 import com.example.generatekanji.application.views.WordView
 import com.example.generatekanji.domain.dto.WordData
+import com.example.generatekanji.domain.view.RandomTranslateWordView
 import com.example.generatekanji.domain.view.RandomWordView
 import com.example.generatekanji.infra.WordRepository
 import io.swagger.v3.oas.annotations.Operation
@@ -55,6 +56,12 @@ class WordsController(
     @Operation(description = "Get Random")
     fun getRandomWord(): RandomWordView{
          return wordService.getRandom()
+    }
+
+    @GetMapping("/translate-quiz")
+    @Operation(description = "Get random translate quiz")
+    fun getRandomTranslateQuiz():RandomTranslateWordView{
+        return wordService.getRandomTranslateQuiz()
     }
 
     @GetMapping("/generate-today")
