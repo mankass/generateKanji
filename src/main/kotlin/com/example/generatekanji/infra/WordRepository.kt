@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface WordRepository:CrudRepository<WordData,String>{
 
+    fun findByWord(word:String):List<WordData>
 
-
+    fun findByTranslate(word: String):List<WordData>
 }

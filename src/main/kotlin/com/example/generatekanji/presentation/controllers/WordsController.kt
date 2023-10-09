@@ -52,6 +52,18 @@ class WordsController(
        return wordService.getWordsByDate(localDate)
     }
 
+    @GetMapping("/getByWord")
+    @Operation(description = "searchWordByName")
+    fun searchWordByName(string: String): List<WordData> {
+        return wordService.getWordsByName(string)
+    }
+
+    @GetMapping("/getByTranslate")
+    @Operation(description = "searchWordByTranslate")
+    fun searchWordByTranslate(string: String): List<WordData> {
+        return wordService.getWordsByTranslate(string)
+    }
+
     @GetMapping("/random")
     @Operation(description = "Get Random")
     fun getRandomWord(): RandomWordView{
@@ -66,11 +78,8 @@ class WordsController(
 
     @GetMapping("/generate-today")
     @Operation(description = "Get all today words")
-    fun generateToday(): ResponseEntity<String> {
-        val listWordsFromDb = randomGenerator(getAllWordsToday(LocalDate.now())).take(60).toList()
-        val stringPair = tableService.createTable(listWordsFromDb,"today")
-        translatePageService.createTranslatePage(Pair(stringPair.first, listWordsFromDb))
-        return ResponseEntity.ok(stringPair.first)
+    fun generateToday(date: LocalDate){
+        wordService.generateWordsByDate(date)
     }
 
 
@@ -120,8 +129,6 @@ class WordsController(
     @GetMapping("/getAllToday")
     @Operation(description = "downloadToday")
     fun downloadAllToday(): ResponseEntity<ByteArrayResource> {
-        val filename = generateToday().body
-
         val list = listOf(
             "C:\\Users\\Даниил\\IdeaProjects\\generateKanji_new\\3bfbad49-ef8b-408c-9ea8-7072dd6de9c7.docx",
             "C:\\Users\\Даниил\\IdeaProjects\\generateKanji_new\\allb0a960ae-7968-4422-9301-713216190b93.xlsx")

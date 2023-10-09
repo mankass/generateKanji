@@ -16,7 +16,7 @@
         class="row q-pt-lg inline"
         v-for="answer in randomWord.answers"
       >
-        <q-btn @click="checkAnswer(answer)"> {{ answer }}</q-btn>
+        <q-btn   ripple rounded @click="checkAnswer(answer)"> {{ answer }}</q-btn>
       </q-card-actions>
       <div class="q-pa-lg">
         <q-btn class="button-text" @click="getRandomWord"> Next word</q-btn>
