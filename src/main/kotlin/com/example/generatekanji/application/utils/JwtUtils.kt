@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import java.time.Duration
-import java.util.Date
+import java.util.*
 import java.util.stream.Collectors
 
 @Service
@@ -19,7 +19,7 @@ class JwtUtils(
     var lifiteme: Duration
 ) {
 
-    fun generatToken(user: UserDetails): String {
+    fun generateToken(user: UserDetails): String {
         val claims = mutableMapOf<String, Any>()
         val roles = (user.authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
         claims["roles"] = roles

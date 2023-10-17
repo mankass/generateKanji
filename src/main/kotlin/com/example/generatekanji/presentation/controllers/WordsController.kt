@@ -18,7 +18,6 @@ import org.springframework.util.StreamUtils
 import org.springframework.web.bind.annotation.*
 import java.io.BufferedOutputStream
 import java.io.ByteArrayOutputStream
-import java.io.OutputStream
 import java.nio.file.Files
 import java.time.LocalDate
 import java.util.*
@@ -26,7 +25,6 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 import javax.ws.rs.Produces
 import javax.ws.rs.core.HttpHeaders
-import javax.ws.rs.core.Response
 import kotlin.io.path.Path
 
 
@@ -121,9 +119,16 @@ class WordsController(
     @GetMapping("/getWords")
     @Produces("document/docx")
     fun downloadWords(string: String): ResponseEntity<ByteArrayResource> {
-        val file= Path("C:\\Users\\Даниил\\IdeaProjects\\generateKanji_new\\183f999e-47bd-4591-a098-79e6c3885205.xlsx")
+        val file = Path("C:\\Users\\Даниил\\IdeaProjects\\generateKanji_new\\183f999e-47bd-4591-a098-79e6c3885205.xlsx")
         return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\""+file.fileName+"\"").body(ByteArrayResource(Files.readAllBytes(file)))
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.fileName + "\"")
+            .body(ByteArrayResource(Files.readAllBytes(file)))
+    }
+
+    @DeleteMapping
+    @Operation(description = "deleteWord")
+    fun deleteWord(@RequestParam id: String) {
+        wordService.deleteWord(id)
     }
 
     @GetMapping("/getAllToday")
@@ -131,7 +136,8 @@ class WordsController(
     fun downloadAllToday(): ResponseEntity<ByteArrayResource> {
         val list = listOf(
             "C:\\Users\\Даниил\\IdeaProjects\\generateKanji_new\\3bfbad49-ef8b-408c-9ea8-7072dd6de9c7.docx",
-            "C:\\Users\\Даниил\\IdeaProjects\\generateKanji_new\\allb0a960ae-7968-4422-9301-713216190b93.xlsx")
+            "C:\\Users\\Даниил\\IdeaProjects\\generateKanji_new\\allb0a960ae-7968-4422-9301-713216190b93.xlsx"
+        )
         val byteArrayOutputStream = ByteArrayOutputStream()
         val bufferedOutputStream = BufferedOutputStream(byteArrayOutputStream)
         val zipOutputStream = ZipOutputStream(bufferedOutputStream)

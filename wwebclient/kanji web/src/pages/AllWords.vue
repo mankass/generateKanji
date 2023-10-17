@@ -40,13 +40,14 @@
     <q-dialog v-model="dialogNew">
       <NewWords></NewWords>
     </q-dialog>
+    <q-btn @click="test()"> Test</q-btn>
     <router-view/>
   </q-page-container>
 </template>
 
 <script lang="ts" setup>
 import {ref} from "vue";
-import {APIApi, WordData} from "../../../generated";
+import {APIApi, Configuration, DeckAPIApi, WordData} from "../../../generated";
 import NewWords from "../components/modals/NewWords.vue";
 
 const api = new APIApi();
@@ -55,6 +56,7 @@ const dialogNew = ref(false);
 const searchValue = ref<string>("")
 const result = ref<WordData[]>()
 const searchOptions = ref<string>('Translate')
+
 const options = [
   "Translate", "Word"
 ]
@@ -82,9 +84,25 @@ const columnsTest = [
   },
 ];
 
+
 async function getAllWords() {
   console.log("start");
   wordsList.value = await api.getAllWords();
+}
+
+async function test() {
+  localStorage.setItem('token', 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sInN1YiI6InVzZXIiLCJpYXQiOjE' +
+    '2OTc0NzczMjEsImV4cCI6MTY5NzQ3OTEyMX0.-GRfHwb2JRQwNKDFrBeoVoZLrzyfV5Gm6dXSF0O5V-o')
+  const deckApi = new DeckAPIApi(new Configuration({
+    headers: {
+      "Authorization": localStorage.getItem('token')
+    }
+
+  }))
+
+  await deckApi.createDeck({
+    name: '123'
+  })
 }
 
 async function search(string: string) {

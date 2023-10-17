@@ -12,13 +12,18 @@ class DeckData(
 
     @Schema(description = "listWords")
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
-    @JoinColumn(name="id", updatable = true)
-    var listWords: MutableList<WordData>?,
+    @JoinColumn(name = "id", updatable = true)
+    var listWords: MutableList<WordAndStat>?,
 
     @Id
-    @Column(name = "id",unique = true,nullable = false)
+    @Column(name = "id", unique = true, nullable = false)
     @GeneratedValue(generator = "system-uuid", strategy = GenerationType.UUID)
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    val id: String?
+    val id: String?,
+
+    @Schema(description = "listUsersOwners")
+    @ManyToMany(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "id", updatable = true)
+    var listUsers: MutableList<UserData>?
 
 )

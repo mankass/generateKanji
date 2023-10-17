@@ -1,6 +1,8 @@
 package com.example.generatekanji.config
 
 import com.example.generatekanji.application.utils.JwtUtils
+import com.example.generatekanji.domain.dto.UserData
+import com.example.generatekanji.infra.UserRepository
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.SignatureException
 import jakarta.servlet.FilterChain
@@ -14,7 +16,10 @@ import org.springframework.web.filter.OncePerRequestFilter
 import java.util.stream.Collectors
 
 @Component
-class JwtRequestFilter(val jwtUtils: JwtUtils) : OncePerRequestFilter() {
+class JwtRequestFilter(
+    val jwtUtils: JwtUtils,
+    val userRepository: UserRepository
+) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
         request: HttpServletRequest,
@@ -28,7 +33,11 @@ class JwtRequestFilter(val jwtUtils: JwtUtils) : OncePerRequestFilter() {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7)
             try {
+
                 username = jwtUtils.getUsername(jwt)
+                val user: UserData? = userRepository.findByLogin(username)
+                request.setAttribute("user", user)
+
             } catch (e: ExpiredJwtException) {
                 logger.debug("Время жизни токены вышло")
             } catch (e: SignatureException) {

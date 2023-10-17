@@ -8,15 +8,19 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.stream.Collectors
+import javax.ws.rs.NotFoundException
 
 @Service
-class UserService(val repository: UserRepository) :UserDetailsService
-{
+class UserService(val repository: UserRepository) : UserDetailsService {
     @Transactional
     override fun loadUserByUsername(username: String?): UserDetails {
 
-        val user= repository.findByLogin(username)
-        return User(user.login,user.password,user.roles.stream().map { role->SimpleGrantedAuthority(role.name) }.collect(Collectors.toList()))
-
+        val user = repository.findByLogin(username)
+        if (user != null) {
+            return User(
+                user.login, user.password, user.roles.stream()
+                    .map { role -> SimpleGrantedAuthority(role.name) }.collect(Collectors.toList())
+            )
+        } else throw NotFoundException("not found user")
     }
 }

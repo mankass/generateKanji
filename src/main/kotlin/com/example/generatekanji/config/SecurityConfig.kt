@@ -16,29 +16,25 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.HttpStatusEntryPoint
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
 @Configuration
-@EnableWebMvc
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(securedEnabled = true)
 class SecurityConfig(val userService: UserService,val jwtRequestFilter: JwtRequestFilter) {
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http.authorizeHttpRequests { auth ->
             auth.requestMatchers("/signin", "/signup").permitAll()
+                .requestMatchers("/api/web-client/deck/**").authenticated()
                 .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
-                .requestMatchers("web-client/**").permitAll()
-                .requestMatchers("/api").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/web-client/security/**").permitAll()
+                .requestMatchers("/api/web-client/**").permitAll()
                 .requestMatchers("/v2/api-docs",
                     "/v3/api-docs",
                     "/swagger-resources/**",
                     "/swagger-ui/**",
                     "/api-docs/**").permitAll()
-                .anyRequest().permitAll()
-
         }
             .formLogin { formLogin ->
                 formLogin

@@ -75,4 +75,9 @@ class WordService(
     fun getWordsByTranslate(string: String): List<WordData> {
         return wordRepository.findByTranslate(string)
     }
+
+    fun deleteWord(id: String) {
+        wordRepository.deleteById(id)
+
+    }
 }

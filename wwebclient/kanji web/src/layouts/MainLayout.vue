@@ -11,7 +11,7 @@
             href="http://localhost:9000/#/user"
           >
           </q-btn>
-          <q-btn> Log in</q-btn>
+          <q-btn @click="showAuthModal=true"> Log in</q-btn>
         </q-toolbar>
       </q-header>
 
@@ -51,26 +51,38 @@
 
             <q-item href="http://localhost:9000/#/decks" clickable v-ripple>
               <q-item-section avatar>
-                <q-icon name="folder_copy" />
+                <q-icon name="folder_copy"/>
               </q-item-section>
 
-              <q-item-section> Decks </q-item-section>
+              <q-item-section> Decks</q-item-section>
             </q-item>
           </q-list>
         </q-scroll-area>
       </q-drawer>
 
-      <router-view />
+      <q-dialog v-model="showAuthModal">
+        <auth-modal>
+
+        </auth-modal>
+      </q-dialog>
+
+      <router-view/>
     </q-layout>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { defineComponent, Ref, ref } from "vue";
-import { APIApi, Configuration, WordData } from "../../../generated/";
+import {ref} from "vue";
+import {APIApi} from "../../../generated/";
+import AuthModal from "components/modals/AuthModal.vue";
 
 const api = new APIApi();
 const drawer = ref(true);
+const showAuthModal = ref(false)
+
+
+
+
 </script>
 
 <style lang="sass" scoped>

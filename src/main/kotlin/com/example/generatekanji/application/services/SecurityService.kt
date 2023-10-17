@@ -1,17 +1,21 @@
 package com.example.generatekanji.application.services
 
+import com.example.generatekanji.domain.dto.DeckData
 import com.example.generatekanji.domain.dto.UserData
 import com.example.generatekanji.domain.view.UserView
+import com.example.generatekanji.infra.DeckRepository
 import com.example.generatekanji.infra.UserRepository
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
-import java.lang.IllegalArgumentException
 import java.time.LocalDate
 import java.util.*
 
 @Service
 class SecurityService(
-    val repository: UserRepository
-)  {
+    val repository: UserRepository,
+    val passwordEncoder: BCryptPasswordEncoder,
+    val deckRepository: DeckRepository
+) {
     fun getUser(id: String): Optional<UserData> {
         return repository.findById(id)
     }
@@ -26,11 +30,15 @@ class SecurityService(
                 LocalDate.now(),
                 user.roles,
                 user.email,
-                user.password,
+                passwordEncoder.encode(user.password),
                 null
             )
             val id = repository.save(newUser)
-            return id.id;
+
+            val list: MutableList<UserData> = mutableListOf(id)
+            deckRepository.save(DeckData("deck${id.id}", null, null, list))
+
+            return id.id
         }
         throw IllegalArgumentException("Логин занят")
     }
@@ -41,9 +49,9 @@ class SecurityService(
 
     fun findIsExistingLogin(string: String): Boolean {
         return try {
-            var temp = repository.findByLogin(string)
+            repository.findByLogin(string)
             false
-        }catch (e:Exception){
+        } catch (e: Exception) {
             true
         }
     }

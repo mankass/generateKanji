@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface UserRepository:CrudRepository<UserData,String> {
-    fun findByLogin(login: String?):UserData
+    fun findByLogin(login: String?): UserData?
 
 
 }
