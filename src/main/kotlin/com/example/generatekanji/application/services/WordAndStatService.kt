@@ -33,7 +33,6 @@ class WordAndStatService(
             wordAndStat.percentCorrect = (wordAndStat.correctAttempts) /
                     (wordAndStat.correctAttempts + wordAndStat.wrongAttempts)
             wordAndStatRepository.save(wordAndStat)
-
         }
 
 
@@ -44,15 +43,11 @@ class WordAndStatService(
                 (wordAndStatShared.wrongAttempts / wordAndStatShared.correctAttempts),
                 null
             )
-
         )
-
-
     }
 
     fun findById(id: String): Optional<WordAndStat> {
         return wordAndStatRepository.findById(id)
-
     }
 
     fun findAllWordAndStatToUser(userData: UserData): List<WordAndStat> {
@@ -101,5 +96,4 @@ class WordAndStatService(
             )
         )
     }
-
 }

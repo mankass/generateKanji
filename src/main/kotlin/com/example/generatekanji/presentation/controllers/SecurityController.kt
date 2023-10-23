@@ -43,19 +43,15 @@ class SecurityController(
         return securityService.getAll()
     }
 
-
     @PutMapping("/checkLogin")
     @Operation(description ="check for existing Login" )
     fun checkLogin(@RequestParam login:String):Boolean{
        return securityService.findIsExistingLogin(login)
     }
 
-
     @DeleteMapping("/user")
     @Operation(description = "delete User")
     fun deleteUser(@RequestParam id:String){
         securityService.deleteUser(id)
     }
-
-
 }

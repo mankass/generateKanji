@@ -34,11 +34,7 @@ class DeckController(
 
     @PostMapping
     @Operation(description = "Crate deck")
-    fun createDeck(
-        @RequestParam name: String
-    ): HttpStatus {
-        println("tuta")
-        println()
+    fun createDeck(@RequestParam name: String): HttpStatus {
         deckRepository.save(DeckData("null", null, name, null))
         return HttpStatus.OK
     }
@@ -60,8 +56,5 @@ class DeckController(
     @Operation(description = "add word to deck")
     fun addWordToDeck(@RequestParam idDeck: String, @RequestParam wordId: String, @RequestParam userData: UserData) {
         deckService.addWordToDeck(idDeck, wordId, userData)
-
     }
-
-
 }

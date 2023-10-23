@@ -21,8 +21,5 @@ class FilesController(
     @Operation(description = "Create files")
     fun getAllWordsToday() {
         filesService.createAll(wordService.generateRandomWordsList())
-
     }
-
-
 }

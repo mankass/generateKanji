@@ -10,11 +10,9 @@ class TranslatePageService {
         val doc=XWPFDocument()
         val paragraph=doc.createParagraph()
         val run=paragraph.createRun()
-        var i=0
-        for (word in pair.second){
+        for ((i, word) in pair.second.withIndex()) {
             run.addBreak()
             run.setText("${i}-Word:${word.word} -[${word.transcription}] -:${word.translate} ")
-            i++;
         }
 
         run.fontSize=16

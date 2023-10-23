@@ -12,7 +12,7 @@ class DeckService(
     val wordRepository: WordRepository
 ) {
     fun addWordToDeck(idDeck: String, wordId: String, userData: UserData) {
-        var deck = deckRepository.findById(idDeck)
+        val deck = deckRepository.findById(idDeck)
         val word = wordRepository.findById(wordId)
         deck.get().listWords?.add(
             WordAndStat(
@@ -20,7 +20,6 @@ class DeckService(
                 0, 0, 0, null
             )
         )
-
-        val result = deckRepository.save(deck.get())
+        deckRepository.save(deck.get())
     }
 }

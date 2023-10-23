@@ -22,6 +22,4 @@ class LeaderboardController(
     fun getLeaderboard(): List<LeaderboardUnitView> {
         return leaderboardService.getTable()
     }
-
-
 }
