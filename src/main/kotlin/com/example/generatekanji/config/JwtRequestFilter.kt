@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import java.util.stream.Collectors
 
+
 @Component
 class JwtRequestFilter(
     val jwtUtils: JwtUtils,
@@ -26,22 +27,20 @@ class JwtRequestFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val authHeader = request.getHeader("Authorization")
+        var authHeader = request.getHeader("Authorization")
         var username: String? = null
         var jwt: String? = null
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7)
             try {
-
                 username = jwtUtils.getUsername(jwt)
                 val user: UserData? = userRepository.findByLogin(username)
-                request.setAttribute("user", user)
 
             } catch (e: ExpiredJwtException) {
-                logger.debug("Время жизни токены вышло")
+                logger.info("Время жизни токены вышло")
             } catch (e: SignatureException) {
-                logger.debug("Подпись неверная")
+                logger.info("Подпись неверная")
             }
         }
         if (username != null && SecurityContextHolder.getContext().authentication == null) {

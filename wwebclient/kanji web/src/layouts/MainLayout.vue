@@ -11,7 +11,7 @@
             href="http://localhost:9000/#/user"
           >
           </q-btn>
-          <q-btn @click="showAuthModal=true"> Log in</q-btn>
+          <q-btn @click="showAuthModal = true"> Log in</q-btn>
         </q-toolbar>
       </q-header>
 
@@ -61,9 +61,7 @@
       </q-drawer>
 
       <q-dialog v-model="showAuthModal">
-        <auth-modal>
-
-        </auth-modal>
+        <auth-modal></auth-modal>
       </q-dialog>
 
       <router-view/>
@@ -78,15 +76,10 @@ import AuthModal from "components/modals/AuthModal.vue";
 
 const api = new APIApi();
 const drawer = ref(true);
-const showAuthModal = ref(false)
-
-
-
-
+const showAuthModal = ref(false);
 </script>
 
 <style lang="sass" scoped>
-
 
 .back
   background: #009B4D

@@ -6,7 +6,9 @@ import com.example.generatekanji.domain.dto.UserData
 import com.example.generatekanji.infra.DeckRepository
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 import java.util.*
 
 @RestController
@@ -33,12 +35,12 @@ class DeckController(
     @PostMapping
     @Operation(description = "Crate deck")
     fun createDeck(
-        @RequestAttribute("user") userData: UserData,
         @RequestParam name: String
-    ) {
+    ): HttpStatus {
         println("tuta")
-        println(userData)
-        deckRepository.save(DeckData(userData.surname, null, name, null))
+        println()
+        deckRepository.save(DeckData("null", null, name, null))
+        return HttpStatus.OK
     }
 
     @DeleteMapping
@@ -49,7 +51,8 @@ class DeckController(
 
     @GetMapping("/get-all")
     @Operation(description = "get all decks")
-    fun getALlDecks(): List<DeckData> {
+    fun getALlDecks(principal: Principal): List<DeckData> {
+        println(principal)
         return deckRepository.findAll().toList()
     }
 

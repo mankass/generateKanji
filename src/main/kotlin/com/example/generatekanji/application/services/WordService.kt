@@ -34,7 +34,7 @@ class WordService(
         )
         shuffle(listAnswers)
 
-        return RandomWordView(word.word, word.translate, word.transcription, listAnswers)
+        return RandomWordView(word.id, word.word, word.translate, word.transcription, listAnswers)
     }
 
     fun getWordsByDate(localDate: LocalDate): List<WordData> {

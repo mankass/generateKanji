@@ -19,13 +19,13 @@ class WordAndStat(
     val userData: UserData,
 
     @Schema(description = "wrongAttempts")
-    val wrongAttempts: Int?,
+    var wrongAttempts: Int,
 
     @Schema(description = "correctAttempts")
-    val correctAttempts: Int,
+    var correctAttempts: Int,
 
     @Schema(description = "percentCorrect")
-    val percentCorrect: Int,
+    var percentCorrect: Int,
 
     @Id
     @Column(name = "id")

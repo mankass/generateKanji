@@ -3,22 +3,20 @@
     <q-card class="q-ma-md container-buttons">
       <q-btn class="q-ma-xs" color="green" @click="dialogNew = true">
         add new word
-      </q-btn
-      >
+      </q-btn>
       <q-btn class="q-ma-xs" color="orange" @click="dialogNew = true">
         Edit word
-      </q-btn
-      >
+      </q-btn>
+      <q-btn class="q-ma-xs" color="orange" @click="getDeck()"> test</q-btn>
+      <div>{{ randomWord }}</div>
     </q-card>
     <q-card class="row q-ma-md container-buttons">
-      <q-select v-model="searchOptions" :options="options">
-      </q-select>
-      <q-input v-model="searchValue" dense>
-      </q-input>
+      <q-select v-model="searchOptions" :options="options"></q-select>
+      <q-input v-model="searchValue" dense></q-input>
       <q-btn @click="search(searchValue)"> Search</q-btn>
     </q-card>
     <q-card>
-      {{result}}
+      {{ result }}
     </q-card>
 
     <div class="q-ma-md">
@@ -47,32 +45,39 @@
 
 <script lang="ts" setup>
 import {ref} from "vue";
-import {APIApi, Configuration, DeckAPIApi, WordData} from "../../../generated";
+import {APIApi, Configuration, DeckAPIApi, RandomWordView, WordData,} from "../../../generated";
 import NewWords from "../components/modals/NewWords.vue";
 
-const api = new APIApi();
+let api = new APIApi();
 const wordsList = ref<WordData[]>();
 const dialogNew = ref(false);
-const searchValue = ref<string>("")
-const result = ref<WordData[]>()
-const searchOptions = ref<string>('Translate')
+const searchValue = ref<string>("");
+const result = ref<WordData[]>();
+const searchOptions = ref<string>("Translate");
+const randomWord = ref<RandomWordView>();
+let deckApi = new DeckAPIApi(
+  new Configuration({
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("jwt"),
+    },
+  })
+);
 
-const options = [
-  "Translate", "Word"
-]
+const options = ["Translate", "Word"];
+
 const columnsTest = [
   {
     name: "word",
     label: "Word",
     align: "left",
-    field: "word",
+    field: "login",
     sortable: true,
   },
   {
     name: "translate",
     align: "center",
     label: "Translate",
-    field: "translate",
+    field: "percentCorrect",
     sortable: true,
   },
   {
@@ -84,39 +89,26 @@ const columnsTest = [
   },
 ];
 
-
 async function getAllWords() {
   console.log("start");
   wordsList.value = await api.getAllWords();
 }
 
-async function test() {
-  localStorage.setItem('token', 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sInN1YiI6InVzZXIiLCJpYXQiOjE' +
-    '2OTc0NzczMjEsImV4cCI6MTY5NzQ3OTEyMX0.-GRfHwb2JRQwNKDFrBeoVoZLrzyfV5Gm6dXSF0O5V-o')
-  const deckApi = new DeckAPIApi(new Configuration({
-    headers: {
-      "Authorization": localStorage.getItem('token')
-    }
-
-  }))
-
-  await deckApi.createDeck({
-    name: '123'
-  })
+async function getDeck() {
+  await deckApi.getALlDecks();
 }
 
 async function search(string: string) {
   switch (searchOptions.value) {
     case "Translate":
-      result.value = await api.searchWordByTranslate(searchValue)
+      result.value = await api.searchWordByTranslate(searchValue);
     case "Word":
-      result.value = await api.searchWordByName({searchValue})
+      result.value = await api.searchWordByName({searchValue});
     // }
-
   }
 }
 
-getAllWords()
+getAllWords();
 </script>
 
 <style lang="sass" scoped>

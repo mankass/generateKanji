@@ -11,8 +11,7 @@ class DeckData(
 
 
     @Schema(description = "listWords")
-    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
-    @JoinColumn(name = "id", updatable = true)
+    @ManyToMany(cascade = [CascadeType.ALL])
     var listWords: MutableList<WordAndStat>?,
 
     @Id
@@ -23,7 +22,6 @@ class DeckData(
 
     @Schema(description = "listUsersOwners")
     @ManyToMany(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "id", updatable = true)
     var listUsers: MutableList<UserData>?
 
 )

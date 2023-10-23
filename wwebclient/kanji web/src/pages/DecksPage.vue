@@ -32,16 +32,22 @@
 </template>
 
 <script lang="ts" setup>
-import { APIApi, DeckAPIApi, DeckData, WordData } from "../../../generated";
-import { ref } from "vue";
+import {Configuration, DeckAPIApi, DeckData,} from "../../../generated";
+import {ref} from "vue";
 
-const api = new DeckAPIApi();
+const deckApi = new DeckAPIApi(
+  new Configuration({
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("jwt"),
+    },
+  })
+);
 const decksList = ref<DeckData[]>();
 const expanded = ref(false);
 
 async function getAllDecks() {
   console.log("getAllDecks");
-  decksList.value = await api.getALlDecks();
+  decksList.value = await deckApi.getALlDecks();
 }
 
 getAllDecks();
