@@ -1,79 +1,24 @@
 <template>
   <q-page-container class="row">
+    <div class="row">
+      <AppCard
+        :data="translateQuiz"
+        :name="'Translate Quiz'"
+        @choose-answer="checkAnswer"
+      ></AppCard>
+      <AppCard
+        name="TranscriptionQuiz"
+        :data="transcriptionQuiz"
+        @choose-answer="checkAnswer"
+      ></AppCard>
+      <AppCard
+        name="KanjiQuiz"
+        :data="kanjiQuiz"
+        @choose-answer="checkAnswer"
+      ></AppCard>
+    </div>
     <div class="column">
-      <q-card class="random-word" v-if="randomWord != undefined">
-        <div class="q-ma-md titleQuiz">Transcription Quiz</div>
-        <div class="question-container row">
-          <q-card class="question"> {{ randomWord.word }}</q-card>
-          <div>
-            <q-toggle v-model="showHintWord" dense class="hint">
-              Показать перевод
-            </q-toggle>
-            <q-card class="answer" v-if="showHintWord">
-              {{ randomWord.translate }}
-            </q-card>
-          </div>
-        </div>
-        <q-card-actions
-          class="row q-pt-lg inline"
-          v-for="answer in randomWord.answers"
-        >
-          <q-btn
-            color="deep-purple-4"
-            ripple
-            rounded
-            @click="checkAnswer(answer)"
-          >
-            {{ answer }}
-          </q-btn
-          >
-        </q-card-actions>
-        <div class="q-pa-lg">
-          <q-btn ripple rounded class="button-text" @click="getRandomWord">
-            Next word
-          </q-btn
-          >
-        </div>
-      </q-card>
-
-      <q-card class="random-word" v-if="randomTranslateWordView">
-        <div class="q-ma-md titleQuiz">Translate Quiz</div>
-        <div class="question-container row">
-          <q-card class="question"> {{ randomTranslateWordView.word }}</q-card>
-          <div>
-            <q-toggle v-model="showHintTranslate" dense class="hint">
-              Показать транскрипцию
-            </q-toggle>
-            <q-card class="answer" v-if="showHintTranslate">
-              {{ randomTranslateWordView.transcription }}
-            </q-card>
-          </div>
-        </div>
-        <q-card-actions
-          class="row q-pt-lg inline"
-          v-for="answer in randomTranslateWordView.answers"
-        >
-          <q-btn
-            ripple
-            rounded
-            color="deep-purple-4"
-            @click="randomTranslateQuiz(answer)"
-          >
-            {{ answer }}
-          </q-btn>
-        </q-card-actions>
-        <div class="q-pa-lg">
-          <q-btn
-            class="button-text"
-            ripple
-            rounded
-            @click="getRandomTranslateWordView"
-          >
-            Next word
-          </q-btn>
-        </div>
-      </q-card>
-      <q-card class="random-word" v-if="randomWordAndStat">
+      <q-card class="random-word" v-if="false">
         <div class="q-ma-md titleQuiz">My QUIZ</div>
         <div class="question-container row">
           <q-card class="question"> {{ randomWordAndStat.word }}</q-card>
@@ -98,19 +43,17 @@
             @click="checkAnswerMyQuiz(answer)"
           >
             {{ answer }}
-          </q-btn
-          >
+          </q-btn>
         </q-card-actions>
         <div class="q-pa-lg">
           <q-btn ripple rounded class="button-text" @click="getRandomStat">
             Next word
-          </q-btn
-          >
+          </q-btn>
         </div>
       </q-card>
     </div>
-    <div class="q-ml-xl q-mt-xl leaderboard">
-      <div>
+    <div class="q-ml-xl  leaderboard q-mt-md">
+      <div class=" q-mt-md">
         <q-table
           :rows-per-page-options="[15]"
           flat
@@ -124,9 +67,6 @@
         ></q-table>
       </div>
     </div>
-    <AppCard :data="translateQuiz" :name="'Translate Quiz'"></AppCard>
-    <AppCard name="transcriptionQuiz" :data="transcriptionQuiz"></AppCard>
-    <AppCard name="kanjiQuiz" :data="kanjiQuiz"></AppCard>
   </q-page-container>
 </template>
 
@@ -137,10 +77,10 @@ import {
   Configuration,
   LeaderboardUnitView,
   QuizView,
+  QuizViewTypeQuizEnum,
   RandomTranslateWordView,
   RandomWordView,
   WordAndStatAPIApi,
-  WordAndStatShared,
   WordAndStatViewRandom,
 } from "../../../generated";
 import {ref} from "vue";
@@ -174,12 +114,9 @@ const randomMyQuizHint = ref<boolean>(false);
 const randomTranslateWordView = ref<RandomTranslateWordView>();
 const leaderboard = ref<LeaderboardUnitView[]>();
 const $q = useQuasar();
-const translateQuiz = ref<QuizView>()
-const transcriptionQuiz = ref<QuizView>()
-const kanjiQuiz = ref<QuizView>()
-
-const showHintWord = ref<boolean>();
-const showHintTranslate = ref<boolean>();
+const translateQuiz = ref<QuizView>();
+const transcriptionQuiz = ref<QuizView>();
+const kanjiQuiz = ref<QuizView>();
 const wordAndStatApi = new WordAndStatAPIApi(
   new Configuration({
     headers: {
@@ -194,25 +131,27 @@ const quizApi = new APIQUIZApi(
     },
   })
 );
-const randomWordAndStatShared = ref<WordAndStatShared>();
 const randomWordAndStat = ref<WordAndStatViewRandom>();
-
-async function getRandomWord() {
-  randomWord.value = await api.getRandomWord();
-}
-
-async function getRandomTranslateWordView() {
-  randomTranslateWordView.value = await api.getRandomTranslateQuiz();
-}
 
 async function getRandomStat() {
   randomWordAndStat.value = await wordAndStatApi.getRandomWordAndStat();
 }
 
-async function getTranslateQuiz() {
-  translateQuiz.value = await quizApi.getTranslateQuiz()
-  transcriptionQuiz.value = await quizApi.getTranscriptionQuiz()
-  kanjiQuiz.value = await quizApi.getKanjiQuiz()
+async function getQuizByType(quiz: QuizViewTypeQuizEnum) {
+  switch (quiz) {
+    case "TRANSCRIPTION": {
+      transcriptionQuiz.value = await quizApi.getQuizByType({quizType: quiz})
+      break
+    }
+    case "TRANSLATE": {
+      translateQuiz.value = await quizApi.getQuizByType({quizType: quiz})
+      break
+    }
+    case "KANJI": {
+      kanjiQuiz.value = await quizApi.getQuizByType({quizType: quiz})
+      break
+    }
+  }
 }
 
 async function getLeaderboard() {
@@ -230,23 +169,22 @@ async function getLeaderboard() {
   }
 }
 
-async function checkAnswer(answer: string) {
-  if (randomWord.value.correctAnswer === answer) {
-    showHintWord.value = false;
-    await wordAndStatApi.createFromRandom({
-      randomWordView: randomWord.value,
-    });
-    await getRandomWord();
+async function checkAnswer(answer: string, quiz: QuizView) {
+  console.log("ответ пришел" + answer);
+  console.log(quiz);
+  console.log(quiz.answer);
+  console.log("type" + translateQuiz.value.typeQuiz)
+  console.log(quiz.typeQuiz)
+  if (quiz.answer === answer) {
+    console.log(quiz.typeQuiz)
+    await getQuizByType(quiz.typeQuiz)
+
     return $q.notify({
       message: "Answer correct.",
       color: "secondary",
       timeout: 22,
     });
   } else {
-    await wordAndStatApi.createWordAndStat({
-      wordAndStatShared: randomWordAndStatShared.value,
-    });
-    showHintWord.value = true;
     return $q.notify({
       message: "Answer incorrect.",
       color: "red",
@@ -255,7 +193,6 @@ async function checkAnswer(answer: string) {
 }
 
 function checkAnswerMyQuiz(answer: string) {
-  console.log("tut");
   if (randomWordAndStat.value.correctAnswer === answer) {
     randomWordAndStat.value.correctAttempts =
       randomWordAndStat.value.correctAttempts + 1;
@@ -281,29 +218,13 @@ function checkAnswerMyQuiz(answer: string) {
   }
 }
 
-function randomTranslateQuiz(answer: string) {
-  if (randomTranslateWordView.value.correctAnswer === answer) {
-    showHintTranslate.value = false;
-    getRandomTranslateWordView();
-    return $q.notify({
-      message: "Answer correct.",
-      color: "secondary",
-      timeout: 22,
-    });
-  } else {
-    showHintTranslate.value = true;
-    return $q.notify({
-      message: "Answer incorrect.",
-      color: "red",
-    });
-  }
-}
 
-getTranslateQuiz()
-getRandomWord();
+getQuizByType("TRANSCRIPTION")
+getQuizByType("TRANSLATE")
+getQuizByType("KANJI")
 getRandomStat();
-getLeaderboard();
-getRandomTranslateWordView();
+getLeaderboard()
+
 </script>
 
 <style lang="sass" scoped>
@@ -321,11 +242,11 @@ getRandomTranslateWordView();
   color: bisque
 
 .leaderboard
-  padding-right: 0px
-  width: 900px
-  margin-right: 10px
+  width: 400px
 
 .leaderboard-list
+  margin-right: 10px
+  display: inline-block
   color: #000000
   background: #c2bff8
 

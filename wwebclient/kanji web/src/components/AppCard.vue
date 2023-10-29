@@ -1,6 +1,6 @@
 <template>
   <q-card class="random-word" v-if="props.data">
-    <div class="q-ma-md titleQuiz">My QUIZ</div>
+    <div class="q-ma-md titleQuiz">{{ props.name }}</div>
     <div class="question-container row">
       <q-card class="question"> {{ props.data.question }}</q-card>
       <div>
@@ -9,35 +9,31 @@
         </q-toggle>
         <q-card class="answer" v-if="quizHint">
           {{ props.data.hint }}
-          <div v-if="props.data.percentCorrect">Stat:{{ props.data.percentCorrect }}%</div>
+          <div v-if="props.data.percentCorrect">
+            Stat:{{ props.data.percentCorrect }}%
+          </div>
         </q-card>
       </div>
     </div>
     <q-card-actions
-      class="row q-pt-lg inline"
+
+      class="row q-pt-lg inline answers-box"
       v-for="answer in props.data.listOfAnswer"
     >
-      <q-btn
-        color="deep-purple-4"
-        ripple
-        rounded
+      <div class="answers-box">
+        <q-btn color="deep-purple-4 " ripple rounded @click="emitAnswer(answer)">
+          {{ answer }}
+        </q-btn>
+      </div>
 
-      >
-        {{ answer }}
-      </q-btn
-      >
     </q-card-actions>
     <div class="q-pa-lg">
       <q-btn ripple rounded class="button-text" @click="getRandomStat">
         Next word
-      </q-btn
-      >
+      </q-btn>
     </div>
   </q-card>
-
-
 </template>
-
 
 <script lang="ts" setup>
 import {ref} from "vue";
@@ -51,9 +47,12 @@ const props = defineProps({
   name: {
     type: String,
     required: true,
-
-  }
+  },
 });
+const emit = defineEmits(["choose-answer"]);
+const emitAnswer = (answer) => {
+  emit("choose-answer", answer, props.data);
+};
 </script>
 
 <style lang="sass" scoped>
@@ -65,20 +64,11 @@ const props = defineProps({
   background: #FFCC00
   color: #09036b
   max-width: 500px
-  max-height: 300px
+  max-height: 400px
 
 .button-text
   background: #21ba45
   color: bisque
-
-.leaderboard
-  padding-right: 0px
-  width: 900px
-  margin-right: 10px
-
-.leaderboard-list
-  color: #000000
-  background: #c2bff8
 
 .controller
   display: flex
@@ -94,6 +84,9 @@ const props = defineProps({
   background: blueviolet
   color: wheat
 
+.answers-box
+  margin-left: auto
+  margin-right: auto
 
 .question
   display: inline-block

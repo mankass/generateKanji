@@ -1,5 +1,6 @@
 package com.example.generatekanji.application.services
 
+import com.example.generatekanji.domain.enums.TypeQuiz
 import com.example.generatekanji.domain.view.QuizView
 import org.springframework.stereotype.Service
 import kotlin.random.Random
@@ -25,7 +26,7 @@ class QuizService(
         )
         wordService.shuffle(listAnswers)
 
-        return QuizView(word.word, word.translate, word.transcription.orEmpty(), listAnswers)
+        return QuizView(word.word, word.translate, word.transcription.orEmpty(), listAnswers, TypeQuiz.TRANSLATE)
     }
 
     fun getKanjiQuiz(): QuizView {
@@ -41,7 +42,7 @@ class QuizService(
         )
         wordService.shuffle(listAnswers)
 
-        return QuizView(word.transcription.orEmpty(), word.translate, word.word, listAnswers)
+        return QuizView(word.transcription.orEmpty(), word.translate, word.word, listAnswers, TypeQuiz.KANJI)
     }
 
     fun getTranscriptionQuiz(): QuizView {
@@ -57,7 +58,17 @@ class QuizService(
         )
         wordService.shuffle(listAnswers)
 
-        return QuizView(word.word, word.transcription.orEmpty(), word.translate, listAnswers)
+        return QuizView(word.word, word.transcription.orEmpty(), word.translate, listAnswers, TypeQuiz.TRANSCRIPTION)
 
+    }
+
+    fun getQuizByType(quizType: TypeQuiz): QuizView? {
+        when (quizType) {
+            TypeQuiz.TRANSLATE -> return getTranslateQuiz()
+            TypeQuiz.KANJI -> return getKanjiQuiz()
+            TypeQuiz.TRANSCRIPTION -> return getTranscriptionQuiz()
+            TypeQuiz.PERSONAL -> null
+        }
+        return null
     }
 }

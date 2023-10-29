@@ -1,5 +1,6 @@
 package com.example.generatekanji.domain.view
 
+import com.example.generatekanji.domain.enums.TypeQuiz
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(description = "QuizUnit")
@@ -15,6 +16,9 @@ class QuizView(
     val hint: String,
 
     @Schema(description = "List of Answers")
-    val listOfAnswer: List<String>
+    val listOfAnswer: List<String>,
+
+    @Schema(description = "Type Quiz")
+    val typeQuiz: TypeQuiz
 
 )
