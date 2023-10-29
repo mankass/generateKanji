@@ -19,7 +19,6 @@ class WordAndStatController(
     val wordAndStatService: WordAndStatService
 ) {
 
-
     @GetMapping("/random")
     @Operation(description = "Get Random WordAndStat")
     fun getRandomWordAndStat(principal: Principal): WordAndStatViewRandom {

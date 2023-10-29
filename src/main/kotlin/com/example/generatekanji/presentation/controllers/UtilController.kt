@@ -10,7 +10,7 @@ import java.security.Principal
 
 
 @RestController
-@Tag(name = "API")
+@Tag(name = "API_UTILS")
 @RequestMapping("/api/web-client/utils")
 @CrossOrigin
 class UtilController {

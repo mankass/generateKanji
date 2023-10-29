@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts" setup>
-import {Configuration, DeckAPIApi, DeckData,} from "../../../generated";
+import {Configuration, DeckAPIApi, DeckData} from "../../../generated";
 import {ref} from "vue";
 
 const deckApi = new DeckAPIApi(

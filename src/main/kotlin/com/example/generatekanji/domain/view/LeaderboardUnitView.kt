@@ -8,4 +8,6 @@ class LeaderboardUnitView(
     val login: String,
     @Schema(description = "percentCorrect")
     val percentCorrect: Int,
+    @Schema(description = "slot")
+    var slot: Int
 )
