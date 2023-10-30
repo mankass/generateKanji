@@ -18,7 +18,7 @@
       <q-drawer
         v-model="drawer"
         show-if-above
-        :width="200"
+        :width="150"
         bordered
         :breakpoint="500"
         class="bg-grey"
@@ -75,7 +75,7 @@ import {APIApi} from "../../../generated/";
 import AuthModal from "components/modals/AuthModal.vue";
 
 const api = new APIApi();
-const drawer = ref(true);
+const drawer = ref(false);
 const showAuthModal = ref(false);
 </script>
 

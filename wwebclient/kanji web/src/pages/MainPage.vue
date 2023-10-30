@@ -18,7 +18,7 @@
       ></AppCard>
     </div>
     <div class="column">
-      <q-card class="random-word" v-if="false">
+      <q-card class="random-word" v-if="randomWordAndStat">
         <div class="q-ma-md titleQuiz">My QUIZ</div>
         <div class="question-container row">
           <q-card class="question"> {{ randomWordAndStat.word }}</q-card>
@@ -26,6 +26,7 @@
             <q-toggle v-model="randomMyQuizHint" dense class="hint">
               Показать перевод
             </q-toggle>
+
             <q-card class="answer" v-if="randomMyQuizHint">
               {{ randomWordAndStat.translate }}
               <div>Stat:{{ randomWordAndStat.percentCorrect }}%</div>
@@ -52,8 +53,8 @@
         </div>
       </q-card>
     </div>
-    <div class="q-ml-xl  leaderboard q-mt-md">
-      <div class=" q-mt-md">
+    <div class="q-ml-xl leaderboard q-mt-md">
+      <div class="q-mt-md">
         <q-table
           :rows-per-page-options="[15]"
           flat
@@ -78,8 +79,6 @@ import {
   LeaderboardUnitView,
   QuizView,
   QuizViewTypeQuizEnum,
-  RandomTranslateWordView,
-  RandomWordView,
   WordAndStatAPIApi,
   WordAndStatViewRandom,
 } from "../../../generated";
@@ -109,9 +108,7 @@ const columnsTest = [
   },
 ];
 const api = new APIApi();
-const randomWord = ref<RandomWordView>();
 const randomMyQuizHint = ref<boolean>(false);
-const randomTranslateWordView = ref<RandomTranslateWordView>();
 const leaderboard = ref<LeaderboardUnitView[]>();
 const $q = useQuasar();
 const translateQuiz = ref<QuizView>();
@@ -140,16 +137,16 @@ async function getRandomStat() {
 async function getQuizByType(quiz: QuizViewTypeQuizEnum) {
   switch (quiz) {
     case "TRANSCRIPTION": {
-      transcriptionQuiz.value = await quizApi.getQuizByType({quizType: quiz})
-      break
+      transcriptionQuiz.value = await quizApi.getQuizByType({quizType: quiz});
+      break;
     }
     case "TRANSLATE": {
-      translateQuiz.value = await quizApi.getQuizByType({quizType: quiz})
-      break
+      translateQuiz.value = await quizApi.getQuizByType({quizType: quiz});
+      break;
     }
     case "KANJI": {
-      kanjiQuiz.value = await quizApi.getQuizByType({quizType: quiz})
-      break
+      kanjiQuiz.value = await quizApi.getQuizByType({quizType: quiz});
+      break;
     }
   }
 }
@@ -170,14 +167,9 @@ async function getLeaderboard() {
 }
 
 async function checkAnswer(answer: string, quiz: QuizView) {
-  console.log("ответ пришел" + answer);
-  console.log(quiz);
-  console.log(quiz.answer);
-  console.log("type" + translateQuiz.value.typeQuiz)
-  console.log(quiz.typeQuiz)
   if (quiz.answer === answer) {
-    console.log(quiz.typeQuiz)
-    await getQuizByType(quiz.typeQuiz)
+    console.log(quiz.typeQuiz);
+    await getQuizByType(quiz.typeQuiz);
 
     return $q.notify({
       message: "Answer correct.",
@@ -218,13 +210,11 @@ function checkAnswerMyQuiz(answer: string) {
   }
 }
 
-
-getQuizByType("TRANSCRIPTION")
-getQuizByType("TRANSLATE")
-getQuizByType("KANJI")
+getQuizByType("TRANSCRIPTION");
+getQuizByType("TRANSLATE");
+getQuizByType("KANJI");
 getRandomStat();
-getLeaderboard()
-
+getLeaderboard();
 </script>
 
 <style lang="sass" scoped>
@@ -233,8 +223,8 @@ getLeaderboard()
   margin-top: 80px
   margin-left: 100px
   display: inline-block
-  background: #FFCC00
-  color: #09036b
+  background: #FFAA00
+  color: #000000
   max-width: 500px
 
 .button-text

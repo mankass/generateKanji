@@ -1,39 +1,22 @@
 <template>
   <q-page-container class="q-page-container">
-    <q-list class="q-ma-lg">
-      <q-card v-for="deck in decksList" :key="id" class="q-ma-md">
-        {{ deck.name }}
-        <q-card-actions>
-          <q-btn
-            color="grey"
-            round
-            flat
-            dense
-            :icon="expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
-            @click="expanded = !expanded"
-          ></q-btn>
-        </q-card-actions>
-
-        <q-slide-transition>
-          <div v-show="expanded">
-            <q-separator></q-separator>
-            <q-card-section class="text-subtitle2">
-              <q-card v-for="word in deck.listWords">
-                <div class="q-ma-xs">
-                  {{ word.word }} - {{ word.translate }}
-                </div>
-              </q-card>
-            </q-card-section>
-          </div>
-        </q-slide-transition>
-      </q-card>
-    </q-list>
+    <div class="row menuDeck">
+      <q-btn @click="createDeck()" color="orange">Create Deck</q-btn>
+    </div>
+    <div class="decks-container">
+      <q-list class="list-decks">
+        <q-card v-for="deck in decksList">
+          <app-deck :data="deck"></app-deck>
+        </q-card>
+      </q-list>
+    </div>
   </q-page-container>
 </template>
 
 <script lang="ts" setup>
-import {Configuration, DeckAPIApi, DeckData} from "../../../generated";
+import {Configuration, DeckAPIApi, DeckView,} from "../../../generated";
 import {ref} from "vue";
+import AppDeck from "components/AppDeck.vue";
 
 const deckApi = new DeckAPIApi(
   new Configuration({
@@ -42,15 +25,36 @@ const deckApi = new DeckAPIApi(
     },
   })
 );
-const decksList = ref<DeckData[]>();
-const expanded = ref(false);
+const decksList = ref<DeckView[]>();
 
 async function getAllDecks() {
   console.log("getAllDecks");
   decksList.value = await deckApi.getALlDecks();
 }
 
+async function createDeck() {
+  await deckApi.createDeck({
+    name: "df",
+  });
+}
+
 getAllDecks();
 </script>
 
-<style scoped></style>
+<style scoped lang="sass">
+.list-decks
+  max-width: 80%
+  align-content: center
+
+.decks-container
+  place-content: center
+  display: flex
+  width: 80%
+  min-width: 80%
+
+.menuDeck
+  background: #31ccec
+  display: flex
+  place-content: center
+
+</style>

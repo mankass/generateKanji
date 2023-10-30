@@ -16,16 +16,19 @@
       </div>
     </div>
     <q-card-actions
-
       class="row q-pt-lg inline answers-box"
       v-for="answer in props.data.listOfAnswer"
     >
       <div class="answers-box">
-        <q-btn color="deep-purple-4 " ripple rounded @click="emitAnswer(answer)">
+        <q-btn
+          color="deep-purple-4 "
+          ripple
+          rounded
+          @click="emitAnswer(answer)"
+        >
           {{ answer }}
         </q-btn>
       </div>
-
     </q-card-actions>
     <div class="q-pa-lg">
       <q-btn ripple rounded class="button-text" @click="getRandomStat">
