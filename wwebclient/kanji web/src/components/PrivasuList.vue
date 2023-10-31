@@ -9,6 +9,7 @@
 </template>
 
 <script lang="ts" setup>
+import {ref} from "vue";
 import {Configuration, DeckAPIApi} from "../../../generated";
 
 const deckApi = new DeckAPIApi(

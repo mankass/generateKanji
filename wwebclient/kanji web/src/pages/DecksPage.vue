@@ -1,6 +1,6 @@
 <template>
   <q-page-container class="q-page-container">
-    <div class="row menuDeck">
+    <div class="row menuDeck q-mt-lg-lg">
       <q-btn @click="createDeck()" color="orange">Create Deck</q-btn>
     </div>
     <div class="decks-container">
@@ -47,8 +47,8 @@ getAllDecks();
   align-content: center
 
 .decks-container
-  place-content: center
-  display: flex
+  margin-left: 10%
+  margin-right: 10%
   width: 80%
   min-width: 80%
 
