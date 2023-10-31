@@ -1,6 +1,7 @@
 <template>
   <q-card>
     <q-card class="q-ml-lg">
+      <div>{{ props.data.listUsers }}</div>
       Name: {{ props.data.name }}
     </q-card>
 
@@ -14,8 +15,8 @@
         @click="expanded = !expanded"
       ></q-btn>
       <q-btn @click="addToDeck(props.data.id)">Add word to Deck</q-btn>
-      <q-btn>Remove deck</q-btn>
-      <q-btn>Privacy</q-btn>
+      <q-btn @click="deleteDeck(props.data.id)">Remove deck</q-btn>
+      <q-btn @click="showPrivacy = true">Privacy</q-btn>
     </q-card-actions>
 
     <q-slide-transition>
@@ -37,11 +38,20 @@
       </div>
     </q-slide-transition>
   </q-card>
+  <q-dialog v-model="showPrivacy">
+    <privasu-list
+      :deck-id="props.data.id"
+      :data="props.data.listUsers"
+    ></privasu-list>
+  </q-dialog>
 </template>
 
 <script lang="ts" setup>
 import {Configuration, DeckAPIApi} from "../../../generated";
 import {ref} from "vue";
+import PrivasuList from "components/PrivasuList.vue";
+
+const showPrivacy = ref<boolean>(false);
 
 const expanded = ref(false);
 
@@ -66,11 +76,16 @@ async function addToDeck(idDeck: string) {
     wordId: "4028b8818b0f12e5018b0f1673bb0003",
   });
 }
+
+async function deleteDeck(deckId: string) {
+  await deckApi.delete1({
+    id: deckId,
+  });
+}
 </script>
 
 <style scoped lang="sass">
 
 .appDeck
   width: 80%
-
 </style>

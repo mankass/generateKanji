@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-import {Configuration, DeckAPIApi, DeckView,} from "../../../generated";
+import {Configuration, DeckAPIApi, DeckView} from "../../../generated";
 import {ref} from "vue";
 import AppDeck from "components/AppDeck.vue";
 
@@ -56,5 +56,4 @@ getAllDecks();
   background: #31ccec
   display: flex
   place-content: center
-
 </style>

@@ -59,4 +59,23 @@ class DeckService(
         deckRepository.save(DeckData(name, null, name, listUsers = mutableListOf(user)))
 
     }
+
+    fun updateDeck(idDeck: String) {
+
+    }
+
+    fun deleteUserFromDeck(login: String, deckId: String) {
+        val deck = deckRepository.findById(deckId)
+        deck.get().listUsers!!.removeAll { item -> item.login == login }
+        deckRepository.save(deck.get())
+
+    }
+
+    fun addUserToDeck(login: String, deckId: String) {
+
+        val deck = deckRepository.findById(deckId)
+        val user = userRepository.findByLogin(login)
+        deck.get().listUsers!!.add(user)
+        deckRepository.save(deck.get())
+    }
 }

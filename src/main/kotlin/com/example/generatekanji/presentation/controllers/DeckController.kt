@@ -29,7 +29,8 @@ class DeckController(
 
     @PutMapping
     @Operation(description = "Update deck")
-    fun updateDeck() {
+    fun updateDeck(@RequestParam idDeck: String) {
+        deckService.updateDeck(idDeck)
     }
 
     @PostMapping
@@ -57,4 +58,17 @@ class DeckController(
     fun addWordToDeck(@RequestParam idDeck: String, @RequestParam wordId: String, principal: Principal) {
         deckService.addWordToDeck(idDeck, wordId, principal)
     }
+
+    @PostMapping("/addUserToDeck")
+    @Operation(description = "addUserToDeck")
+    fun addUserToDeck(@RequestParam login: String, @RequestParam deckId: String) {
+        deckService.addUserToDeck(login, deckId)
+    }
+
+    @PostMapping("/deleteUserFromDeck")
+    @Operation(description = "deleteUserFromDeck")
+    fun deleteUserFromDeck(@RequestParam login: String, @RequestParam deckId: String) {
+        deckService.deleteUserFromDeck(login, deckId)
+    }
+
 }
