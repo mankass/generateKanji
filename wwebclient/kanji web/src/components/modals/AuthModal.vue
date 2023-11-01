@@ -19,7 +19,10 @@
 
 <script lang="ts" setup>
 import {ref} from "vue";
-import {Configuration, SECURITYAPIApi,} from "../../../../generated/client-sdk";
+import {
+  Configuration,
+  SECURITYAPIApi,
+} from "../../../../generated/client-sdk";
 import {APIApi} from "../../../../generated";
 
 const login = ref<string>("");

@@ -42,7 +42,7 @@ class QuizService(
         )
         wordService.shuffle(listAnswers)
 
-        return QuizView(word.transcription.orEmpty(), word.translate, word.word, listAnswers, TypeQuiz.KANJI)
+        return QuizView(word.transcription.orEmpty(), word.word, word.translate, listAnswers, TypeQuiz.KANJI)
     }
 
     fun getTranscriptionQuiz(): QuizView {

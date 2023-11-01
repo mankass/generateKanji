@@ -1,14 +1,19 @@
 <template>
-  <q-page-container class="q-page-container">
-    <div class="row menuDeck q-mt-lg-lg">
-      <q-btn @click="createDeck()" color="orange">Create Deck</q-btn>
-    </div>
-    <div class="decks-container">
-      <q-list class="list-decks">
-        <q-card v-for="deck in decksList">
-          <app-deck :data="deck"></app-deck>
-        </q-card>
-      </q-list>
+  <q-page-container class="q-page-container ">
+    <div class="deck-container">
+      <div class="row menuDeck q-mt-lg-lg">
+        <q-btn class="menu-btn" @click="createDeck()" color="orange"
+        >Create Deck
+        </q-btn
+        >
+      </div>
+      <div class="decks-container">
+        <q-list class="list-decks">
+          <q-card class="q-mt-xs" v-for="deck in decksList">
+            <app-deck :data="deck"></app-deck>
+          </q-card>
+        </q-list>
+      </div>
     </div>
   </q-page-container>
 </template>
@@ -43,17 +48,19 @@ getAllDecks();
 
 <style scoped lang="sass">
 .list-decks
-  max-width: 80%
   align-content: center
 
 .decks-container
-  margin-left: 10%
-  margin-right: 10%
-  width: 80%
-  min-width: 80%
+  margin-left: 150px
+  margin-right: 150px
+
+
+.menu-btn
+  margin: 5px 5px 5px 33px
 
 .menuDeck
   background: #31ccec
   display: flex
-  place-content: center
+  margin: 10px 120px 10px 120px
+  border-radius: 30px
 </style>

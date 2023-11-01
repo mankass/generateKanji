@@ -1,51 +1,59 @@
 <template>
   <q-page-container>
-    <q-card class="q-ma-md container-buttons">
-      <q-btn class="q-ma-xs" color="green" @click="dialogNew = true">
-        add new word
-      </q-btn>
-      <q-btn class="q-ma-xs" color="orange" @click="dialogNew = true">
-        Edit word
-      </q-btn>
-      <q-btn class="q-ma-xs" color="orange" @click="getDeck()"> test</q-btn>
-      <div>{{ randomWord }}</div>
-    </q-card>
-    <q-card class="row q-ma-md container-buttons">
-      <q-select v-model="searchOptions" :options="options"></q-select>
-      <q-input v-model="searchValue" dense></q-input>
-      <q-btn @click="search(searchValue)"> Search</q-btn>
-    </q-card>
-    <q-card>
-      {{ result }}
-    </q-card>
+    <div>
+      <q-card class="container-buttons">
+        <q-btn class="q-ma-xs" color="green" @click="dialogNew = true">
+          add new word
+        </q-btn>
+        <q-btn class="q-ma-xs" color="orange" @click="dialogNew = true">
+          Edit word
+        </q-btn>
+        <q-btn class="q-ma-xs" color="orange" @click="getDeck()"> test</q-btn>
+        <div>{{ randomWord }}</div>
+      </q-card>
+      <q-card class="row q-ma-md container-buttons">
+        <q-select v-model="searchOptions" :options="options"></q-select>
+        <q-input v-model="searchValue" dense></q-input>
+        <q-btn @click="search(searchValue)"> Search</q-btn>
+      </q-card>
+      <q-card>
+        {{ result }}
+      </q-card>
 
-    <div class="q-ma-md">
-      <div class="q-a-lg-lgd">
-        <q-table
-          :rows-per-page-options="[15, 25]"
-          flat
-          bordered
-          title="Words"
-          :rows="wordsList"
-          :columns="columnsTest"
-          row-key="name"
-          dark
-          color="amber"
-        ></q-table>
+      <div class="q-ma-md">
+        <div class="q-a-lg-lgd">
+          <q-table
+            :rows-per-page-options="[15, 25]"
+            flat
+            bordered
+            title="Words"
+            :rows="wordsList"
+            :columns="columnsTest"
+            row-key="name"
+            dark
+            color="amber"
+          ></q-table>
+        </div>
       </div>
-    </div>
 
-    <q-dialog v-model="dialogNew">
-      <NewWords></NewWords>
-    </q-dialog>
-    <q-btn @click="test()"> Test</q-btn>
-    <router-view/>
+      <q-dialog v-model="dialogNew">
+        <NewWords></NewWords>
+      </q-dialog>
+      <q-btn @click="test()"> Test</q-btn>
+      <router-view/>
+    </div>
   </q-page-container>
 </template>
 
 <script lang="ts" setup>
 import {ref} from "vue";
-import {APIApi, Configuration, DeckAPIApi, RandomWordView, WordData,} from "../../../generated";
+import {
+  APIApi,
+  Configuration,
+  DeckAPIApi,
+  RandomWordView,
+  WordData,
+} from "../../../generated";
 import NewWords from "../components/modals/NewWords.vue";
 
 let api = new APIApi();
@@ -116,6 +124,7 @@ getAllWords();
 .container-buttons
   background: #f2c037
   color: black
+  margin: 33px 3px 3px 3px
 
 .button-text
   background: #21ba45
