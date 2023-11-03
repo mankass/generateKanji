@@ -6,6 +6,9 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(description = "QuizUnit")
 class QuizView(
 
+    @Schema(description = "wordId")
+    val wordId: String,
+
     @Schema(description = "Question")
     val question: String,
 

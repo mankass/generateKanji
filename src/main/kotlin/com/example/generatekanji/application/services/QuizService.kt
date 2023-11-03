@@ -3,6 +3,7 @@ package com.example.generatekanji.application.services
 import com.example.generatekanji.domain.enums.TypeQuiz
 import com.example.generatekanji.domain.view.QuizView
 import org.springframework.stereotype.Service
+import java.security.Principal
 import kotlin.random.Random
 
 @Service
@@ -26,7 +27,14 @@ class QuizService(
         )
         wordService.shuffle(listAnswers)
 
-        return QuizView(word.word, word.translate, word.transcription.orEmpty(), listAnswers, TypeQuiz.TRANSLATE)
+        return QuizView(
+            word.id,
+            word.word,
+            word.translate,
+            word.transcription.orEmpty(),
+            listAnswers,
+            TypeQuiz.TRANSLATE
+        )
     }
 
     fun getKanjiQuiz(): QuizView {
@@ -42,7 +50,7 @@ class QuizService(
         )
         wordService.shuffle(listAnswers)
 
-        return QuizView(word.transcription.orEmpty(), word.word, word.translate, listAnswers, TypeQuiz.KANJI)
+        return QuizView(word.id, word.transcription.orEmpty(), word.word, word.translate, listAnswers, TypeQuiz.KANJI)
     }
 
     fun getTranscriptionQuiz(): QuizView {
@@ -58,7 +66,14 @@ class QuizService(
         )
         wordService.shuffle(listAnswers)
 
-        return QuizView(word.word, word.transcription.orEmpty(), word.translate, listAnswers, TypeQuiz.TRANSCRIPTION)
+        return QuizView(
+            word.id,
+            word.word,
+            word.transcription.orEmpty(),
+            word.translate,
+            listAnswers,
+            TypeQuiz.TRANSCRIPTION
+        )
 
     }
 
@@ -70,5 +85,10 @@ class QuizService(
             TypeQuiz.PERSONAL -> null
         }
         return null
+    }
+
+    fun createFromQuiz(quizView: QuizView, principal: Principal) {
+        wordAndStatService.createFromRandom(quizView, principal)
+
     }
 }

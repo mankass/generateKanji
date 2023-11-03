@@ -48,11 +48,6 @@ class WordAndStatController(
         wordAndStatService.save(wordAndStatShared, principal)
     }
 
-    @PostMapping("/createFromRandom")
-    @Operation(description = "createFromRandom")
-    fun createFromRandom(@RequestBody randomWordView: RandomWordView, principal: Principal) {
-        wordAndStatService.createFromRandom(randomWordView, principal)
-    }
 
     @DeleteMapping
     @Operation(description = "Delete WordAndStat")

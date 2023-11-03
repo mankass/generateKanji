@@ -6,6 +6,7 @@ import com.example.generatekanji.domain.view.QuizView
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 
 @RestController
 @RequestMapping("api/web-client/quiz")
@@ -21,6 +22,12 @@ class QuizController(
         //TODO fix !!not null
 
         return quizService.getQuizByType(quizType)!!
+    }
+
+    @Operation(description = "createByQuiz")
+    @PutMapping("createFromQuiz")
+    fun createFromQuiz(@RequestParam quizView: QuizView, principal: Principal) {
+        quizService.createFromQuiz(quizView, principal)
     }
 
 }

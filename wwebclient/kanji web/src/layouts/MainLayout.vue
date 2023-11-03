@@ -80,13 +80,10 @@ const drawer = ref(false);
 const showAuthModal = ref(false);
 </script>
 
-
 <style lang="sass" scoped>
 
 .back
   background: rgba(0, 44, 155, 0.51)
-
-
 </style>
 
 <style lang="css" scoped>
@@ -95,7 +92,8 @@ const showAuthModal = ref(false);
     217deg,
     rgba(145, 44, 44, 0.8),
     rgba(255, 0, 0, 0) 70.71%
-  ), linear-gradient(127deg, rgba(42, 194, 42, 0.8), rgba(0, 255, 0, 0) 70.71%),
+  ),
+  linear-gradient(127deg, rgba(42, 194, 42, 0.8), rgba(0, 255, 0, 0) 70.71%),
   linear-gradient(336deg, rgba(27, 27, 114, 0.8), rgba(0, 0, 255, 0) 70.71%);
 }
 </style>

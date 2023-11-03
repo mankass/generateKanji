@@ -1,11 +1,10 @@
 <template>
-  <q-page-container class="q-page-container ">
+  <q-page-container class="q-page-container">
     <div class="deck-container">
       <div class="row menuDeck q-mt-lg-lg">
         <q-btn class="menu-btn" @click="createDeck()" color="orange"
         >Create Deck
-        </q-btn
-        >
+        </q-btn>
       </div>
       <div class="decks-container">
         <q-list class="list-decks">
@@ -22,6 +21,7 @@
 import {Configuration, DeckAPIApi, DeckView} from "../../../generated";
 import {ref} from "vue";
 import AppDeck from "components/AppDeck.vue";
+import AddWord from "components/AddWord.vue";
 
 const deckApi = new DeckAPIApi(
   new Configuration({

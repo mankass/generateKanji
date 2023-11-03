@@ -4,6 +4,7 @@ import com.example.generatekanji.domain.dto.UserData
 import com.example.generatekanji.domain.dto.WordAndStat
 import com.example.generatekanji.domain.enums.AnswerStatus
 import com.example.generatekanji.domain.shared.WordAndStatShared
+import com.example.generatekanji.domain.view.QuizView
 import com.example.generatekanji.domain.view.RandomWordView
 import com.example.generatekanji.domain.view.WordAndStatViewRandom
 import com.example.generatekanji.infra.UserRepository
@@ -74,8 +75,8 @@ class WordAndStatService(
         )
     }
 
-    fun createFromRandom(randomWordView: RandomWordView, principal: Principal) {
-        val word = wordRepository.findById(randomWordView.id)
+    fun createFromRandom(quizView: QuizView, principal: Principal) {
+        val word = wordRepository.findById(quizView.wordId)
         val user = userRepository.findByLogin(principal.name)
 
         wordAndStatRepository.save(WordAndStat(word.get(), user, 0, 1, 100, null))

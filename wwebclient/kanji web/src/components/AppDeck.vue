@@ -1,6 +1,8 @@
 <template>
   <q-card class="q-card-deck">
-    <q-form v-model="props.data.name" class="q-ml-lg deck-name bold q-pt-xs">Name: {{ props.data.name }}</q-form>
+    <q-form v-model="props.data.name" class="q-ml-lg deck-name bold q-pt-xs"
+    >Name: {{ props.data.name }}
+    </q-form>
 
     <q-card-actions>
       <q-btn
@@ -11,14 +13,12 @@
         :icon="expanded ? 'visibility_off' : 'visibility'"
         @click="expanded = !expanded"
       ></q-btn>
-      <q-btn class="btn-deck glossy" @click="addToDeck(props.data.id)"
+      <q-btn class="btn-deck glossy" @click="openAppWord(props.data.id)"
       >Add word
-      </q-btn
-      >
+      </q-btn>
       <q-btn class="btn-deck glossy" @click="deleteDeck(props.data.id)"
       >Remove
-      </q-btn
-      >
+      </q-btn>
       <q-btn class="btn-deck glossy" @click="showPrivacy = true">Privacy</q-btn>
     </q-card-actions>
 
@@ -26,21 +26,33 @@
       <div v-show="expanded">
         <div>
           <q-card-section class="text-subtitle2">
+            <div v-if="data.listWords.length < 1">
+              <q-card class="no-border empty-deck">Колода пустая</q-card>
+            </div>
+
             <q-card
+              v-else
               class="row deck-action q-mt-xs"
               v-for="word in props.data.listWords"
             >
-              <q-card class="q-pt-xs content-container row  ">
-                <p class="word-text q-pl-md q-pt-xs">{{ word.wordData.word }}</p>
-                <p class="word-text q-pl-md q-pt-xs">{{ word.wordData.translate }}</p>
-                <p class="word-text q-pl-md q-pt-xs">- [{{ word.wordData.transcription }}]</p>
-                <p class=" word-text q-pl-md q-pt-xs q-pr-md">Stat:{{ word.percentCorrect }}</p>
+              <q-card class="q-pt-xs content-container row">
+                <p class="word-text q-pl-md q-pt-xs">
+                  {{ word.wordData.word }}
+                </p>
+                <p class="word-text q-pl-md q-pt-xs">
+                  {{ word.wordData.translate }}
+                </p>
+                <p class="word-text q-pl-md q-pt-xs">
+                  - [{{ word.wordData.transcription }}]
+                </p>
+                <p class="word-text q-pl-md q-pt-xs q-pr-md">
+                  Stat:{{ word.percentCorrect }}
+                </p>
               </q-card>
 
               <q-btn class="q-ml-lg delete-btn" color="red-5"
               >Delete from deck
-              </q-btn
-              >
+              </q-btn>
             </q-card>
           </q-card-section>
         </div>
@@ -53,12 +65,18 @@
       :data="props.data.listUsers"
     ></privasu-list>
   </q-dialog>
+  <q-dialog v-model="showAddWord">
+    <add-word @choose-word="add"></add-word>
+  </q-dialog>
 </template>
 
 <script lang="ts" setup>
-import {Configuration, DeckAPIApi} from "../../../generated";
+import {APIQUIZApi, Configuration, DeckAPIApi, WordAndStatAPIApi} from "../../../generated";
 import {ref} from "vue";
 import PrivasuList from "components/PrivasuList.vue";
+import AddWord from "components/AddWord.vue";
+
+const showAddWord = ref<boolean>(false);
 
 const showPrivacy = ref<boolean>(false);
 
@@ -70,7 +88,7 @@ const props = defineProps({
     required: true,
   },
 });
-console.log("props:" + props.data);
+let deciId = ref<string>('')
 const deckApi = new DeckAPIApi(
   new Configuration({
     headers: {
@@ -78,13 +96,30 @@ const deckApi = new DeckAPIApi(
     },
   })
 );
+const wordAndStatApi = new WordAndStatAPIApi(
+  new Configuration({
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("jwt"),
+    },
+  })
+);
 
-async function addToDeck(idDeck: string) {
-  await deckApi.addWordToDeck({
-    idDeck: idDeck,
-    wordId: "4028b8818b0f12e5018b0f1673bb0003",
-  });
+async function openAppWord(idDeck: string) {
+  showAddWord.value = true
+  deciId.value = idDeck
+
 }
+
+async function add(idWord: string) {
+  await deckApi.addWordToDeck({
+    idDeck: deciId.value,
+    wordId: idWord
+  })
+  showAddWord.value = false
+  //TODO сделать эмит на обновление дэк
+
+}
+
 
 async function deleteDeck(deckId: string) {
   await deckApi.delete1({
@@ -110,8 +145,11 @@ async function deleteDeck(deckId: string) {
 .q-card-deck-2
   background: #1976d2
 
-.deck-action
+.empty-deck
+  background: none
+  border: none
 
+.deck-action
   background: linear-gradient(to right, #0dafef, rgba(248, 76, 105, 0.76))
 
 .words-container
@@ -121,6 +159,7 @@ async function deleteDeck(deckId: string) {
 
 .word-text
   color: whitesmoke
+  width: 120px
 
 .appDeck
   width: 80%
