@@ -15,12 +15,17 @@ class WordData(
 
     @Schema(description = "word")
     val word: String,
+
     @Schema(description = "translate")
     val translate: String,
+
     @Schema(description = "createdData")
     @CreatedDate
     val createdData: LocalDate,
-    val transcription:String?,
+
+    @Schema(description = "transcription")
+    val transcription: String?,
+
     @Id
     @Column(name = "id")
     @GeneratedValue(generator = "system-uuid")

@@ -13,7 +13,7 @@ class WordAndStatViewRandom(
     @Schema(description = "translate")
     val translate: String,
 
-    @Schema(description = "transcription=correctAnswer")
+    @Schema(description = "correctAnswer")
     val correctAnswer: String?,
 
     @Schema(description = "answers")

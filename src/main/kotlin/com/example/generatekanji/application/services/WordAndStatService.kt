@@ -5,13 +5,14 @@ import com.example.generatekanji.domain.dto.WordAndStat
 import com.example.generatekanji.domain.enums.AnswerStatus
 import com.example.generatekanji.domain.shared.WordAndStatShared
 import com.example.generatekanji.domain.view.QuizView
-import com.example.generatekanji.domain.view.RandomWordView
 import com.example.generatekanji.domain.view.WordAndStatViewRandom
 import com.example.generatekanji.infra.UserRepository
 import com.example.generatekanji.infra.WordAndStatRepository
 import com.example.generatekanji.infra.WordRepository
+import com.example.generatekanji.utils.ListUtills
 import org.springframework.stereotype.Service
 import java.security.Principal
+import java.time.LocalDate
 import java.util.*
 import kotlin.random.Random
 
@@ -20,7 +21,8 @@ class WordAndStatService(
     val wordAndStatRepository: WordAndStatRepository,
     val userRepository: UserRepository,
     val wordRepository: WordRepository,
-    val wordService: WordService
+    val wordService: WordService,
+    val utils: ListUtills
 ) {
     fun save(wordAndStatShared: WordAndStatShared, principal: Principal) {
         val user = userRepository.findByLogin(principal.name)
@@ -42,6 +44,7 @@ class WordAndStatService(
                 wordAndStatShared.wordData, user,
                 wordAndStatShared.wrongAttempts, wordAndStatShared.correctAttempts,
                 (wordAndStatShared.wrongAttempts / wordAndStatShared.correctAttempts),
+                LocalDate.now(), LocalDate.now(),
                 null
             )
         )
@@ -79,22 +82,41 @@ class WordAndStatService(
         val word = wordRepository.findById(quizView.wordId)
         val user = userRepository.findByLogin(principal.name)
 
-        wordAndStatRepository.save(WordAndStat(word.get(), user, 0, 1, 100, null))
+        wordAndStatRepository.save(
+            WordAndStat(
+                word.get(),
+                user, 0, 1, 100, LocalDate.now(), LocalDate.now(), null
+            )
+        )
 
     }
 
     fun updateAfterQuiz(wordAndStat: WordAndStatViewRandom, principal: Principal) {
-        val wordAndStatId = wordAndStatRepository.findById(wordAndStat.id)
+        val wordAndStatId = wordAndStatRepository.findById(wordAndStat.id).get()
         val user = userRepository.findByLogin(principal.name)
         val percent: Double =
             wordAndStat.correctAttempts / (wordAndStat.correctAttempts + wordAndStat.wrongAttempts).toDouble() * 100
         wordAndStatRepository.save(
             WordAndStat(
-                wordAndStatId.get().wordData, user, wordAndStat.wrongAttempts,
+                wordAndStatId.wordData, user, wordAndStat.wrongAttempts,
                 wordAndStat.correctAttempts,
                 (percent.toInt()),
-                wordAndStat.id
+                wordAndStatId.createdDate,
+                LocalDate.now(),
+                wordAndStatId.id
             )
         )
+    }
+
+    fun findByDate(localDate: LocalDate, userData: UserData): List<WordAndStat> {
+        val list = wordAndStatRepository.findByUserDataAndCreatedDate(
+            userData, localDate
+        )
+        utils.randomGenerator(list)
+        return list
+    }
+
+    fun getAll(): MutableIterable<WordAndStat> {
+        return wordAndStatRepository.findAll()
     }
 }

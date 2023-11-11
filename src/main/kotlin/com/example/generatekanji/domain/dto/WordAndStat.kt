@@ -3,6 +3,8 @@ package com.example.generatekanji.domain.dto
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.persistence.*
 import org.hibernate.annotations.GenericGenerator
+import org.springframework.data.annotation.CreatedDate
+import java.time.LocalDate
 import java.util.*
 
 @Entity
@@ -26,6 +28,13 @@ class WordAndStat(
 
     @Schema(description = "percentCorrect")
     var percentCorrect: Int,
+
+    @CreatedDate
+    @Schema(description = "createdDate")
+    var createdDate: LocalDate,
+
+    @Schema(description = "createdDate")
+    var lastUsingDate: LocalDate,
 
     @Id
     @Column(name = "id")

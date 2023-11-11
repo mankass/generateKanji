@@ -12,7 +12,6 @@ import kotlin.random.Random
 @Service
 class WordService(
     val wordRepository: WordRepository,
-    val filesService: FilesService
 ) {
     fun <T> randomGenerator(words: List<T>) = sequence {
         while (true) {
@@ -65,8 +64,7 @@ class WordService(
     }
 
     fun generateWordsByDate(date: LocalDate) {
-        val listWordsFromDb = randomGenerator(getWordsByDate(date).take(60)).toList()
-        filesService.createAll(listWordsFromDb)
+
     }
 
     fun getWordsByName(string: String): List<WordData> {

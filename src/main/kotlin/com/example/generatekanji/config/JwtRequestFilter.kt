@@ -38,7 +38,7 @@ class JwtRequestFilter(
                 val user: UserData? = userRepository.findByLogin(username)
 
             } catch (e: ExpiredJwtException) {
-                logger.info("Время жизни токены вышло")
+                logger.info("Время жизни токена вышло")
             } catch (e: SignatureException) {
                 logger.info("Подпись неверная")
             }

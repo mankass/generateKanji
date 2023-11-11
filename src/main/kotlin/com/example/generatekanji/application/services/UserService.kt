@@ -1,5 +1,6 @@
 package com.example.generatekanji.application.services
 
+import com.example.generatekanji.domain.dto.UserData
 import com.example.generatekanji.infra.UserRepository
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
@@ -19,5 +20,10 @@ class UserService(val repository: UserRepository) : UserDetailsService {
             user.login, user.password, user.roles.stream()
                 .map { role -> SimpleGrantedAuthority(role.name) }.collect(Collectors.toList())
         )
+    }
+
+
+    fun getByLogin(login: String): UserData {
+        return repository.findByLogin(login)
     }
 }

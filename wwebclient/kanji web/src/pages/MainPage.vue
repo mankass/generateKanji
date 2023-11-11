@@ -157,7 +157,7 @@ async function getLeaderboard() {
   while (leaderboard.value.length < 15) {
     let i = leaderboard.value.length + 1;
     let temp = ref<LeaderboardUnitView>({
-      login: "Empty",
+      login: 'Empty',
       percentCorrect: 0,
       idEntity: 0,
       slot: i,

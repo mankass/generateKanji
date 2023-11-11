@@ -15,7 +15,7 @@ class DeckData(
     val isPersonal: Boolean,
 
     @Schema(description = "listWords")
-    @ManyToMany(cascade = [CascadeType.DETACH])
+    @ManyToMany(cascade = [CascadeType.ALL])
     var listWords: MutableList<WordAndStat>?,
 
     @Id

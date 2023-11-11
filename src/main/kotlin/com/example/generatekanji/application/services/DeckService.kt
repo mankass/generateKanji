@@ -9,6 +9,7 @@ import com.example.generatekanji.infra.WordRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import java.security.Principal
+import java.time.LocalDate
 import java.util.*
 import kotlin.NoSuchElementException
 
@@ -35,7 +36,8 @@ class DeckService(
             } else {
                 deck.get().listWords?.add(
                     WordAndStat(
-                        word.get(), user, 0, 0, 0, null
+                        word.get(), user, 0, 0, 0,
+                        LocalDate.now(), LocalDate.now(), null
                     )
                 )
             }
