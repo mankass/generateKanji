@@ -51,6 +51,7 @@
               </q-card>
 
               <q-btn class="q-ml-lg delete-btn" color="red-5"
+                     @click="deleteWordFromDeck(props.data.id,word.id)"
               >Delete from deck
               </q-btn>
             </q-card>
@@ -71,10 +72,16 @@
 </template>
 
 <script lang="ts" setup>
-import {APIQUIZApi, Configuration, DeckAPIApi, WordAndStatAPIApi} from "../../../generated";
+import {
+  APIQUIZApi,
+  Configuration,
+  DeckAPIApi,
+  WordAndStatAPIApi,
+} from "../../../generated";
 import {ref} from "vue";
 import PrivasuList from "components/PrivasuList.vue";
 import AddWord from "components/AddWord.vue";
+import AppCreateDeck from "components/AppCreateDeck.vue";
 
 const showAddWord = ref<boolean>(false);
 
@@ -88,7 +95,7 @@ const props = defineProps({
     required: true,
   },
 });
-let deciId = ref<string>('')
+let deciId = ref<string>("");
 const deckApi = new DeckAPIApi(
   new Configuration({
     headers: {
@@ -104,27 +111,36 @@ const wordAndStatApi = new WordAndStatAPIApi(
   })
 );
 
+const emit = defineEmits(["needRefresh"]);
 async function openAppWord(idDeck: string) {
-  showAddWord.value = true
-  deciId.value = idDeck
-
+  showAddWord.value = true;
+  deciId.value = idDeck;
 }
 
 async function add(idWord: string) {
   await deckApi.addWordToDeck({
     idDeck: deciId.value,
-    wordId: idWord
-  })
-  showAddWord.value = false
-  //TODO сделать эмит на обновление дэк
-
+    wordId: idWord,
+  });
+  showAddWord.value = false;
+  emit("needRefresh");
 }
 
+async function deleteWordFromDeck(idDeck: string, idWord: string) {
+  console.log(idDeck, idWord)
+  await deckApi.deleteWordFromDeck({
+      idDeck: idDeck,
+      idWordAndStatId: idWord
+    }
+  )
+
+}
 
 async function deleteDeck(deckId: string) {
   await deckApi.delete1({
     id: deckId,
   });
+  emit("needRefresh");
 }
 </script>
 

@@ -2,10 +2,12 @@ package com.example.generatekanji.domain.view
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-@Schema(description = "LeaderboardUnit")
-class LeaderboardUnitView(
+@Schema(description = "LeaderboardDeckView")
+class LeaderboardDeckView(
     @Schema(description = "login")
-    val login: String,
+    val deckName: String,
+    @Schema(description = "usersUsing")
+    val usersUsing: Int,
     @Schema(description = "idEntity")
     val idEntity: String,
     @Schema(description = "percentCorrect")

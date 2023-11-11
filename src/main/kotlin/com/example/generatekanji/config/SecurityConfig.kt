@@ -36,7 +36,7 @@ class SecurityConfig(val userService: UserService, val jwtRequestFilter: JwtRequ
         http.authorizeHttpRequests { auth ->
             auth.requestMatchers("/signin", "/signup").permitAll()
                 .requestMatchers("/api/web-client/wordAndStat/**").authenticated()
-                .requestMatchers("/api/web-client/deck/**").authenticated()
+                .requestMatchers("/api/web-client/deck/**").permitAll()
                 .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                 .requestMatchers("/api/web-client/security/**").permitAll()
                 .requestMatchers("/api/security/**").permitAll()

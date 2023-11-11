@@ -6,7 +6,9 @@ import com.example.generatekanji.domain.view.DeckView
 import com.example.generatekanji.infra.DeckRepository
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 import java.util.*
@@ -16,21 +18,20 @@ import java.util.*
 @RequestMapping("/api/web-client/deck")
 @CrossOrigin
 class DeckController(
-    val deckRepository: DeckRepository,
-    val deckService: DeckService
+    val deckRepository: DeckRepository, val deckService: DeckService
 ) {
-
 
     @GetMapping
     @Operation(description = "Get deck")
     fun getDeck(id: String): Optional<DeckData> {
-        return deckRepository.findById(id)
+        return deckService.findById(id)
     }
 
     @PutMapping
     @Operation(description = "Update deck")
-    fun updateDeck(@RequestParam idDeck: String) {
+    fun updateDeck(@RequestParam idDeck: String): ResponseEntity<String> {
         deckService.updateDeck(idDeck)
+        return ResponseEntity.ok().build()
     }
 
     @PostMapping
@@ -59,6 +60,12 @@ class DeckController(
         deckService.addWordToDeck(idDeck, wordId, principal)
     }
 
+    @DeleteMapping("/deleteWordFromDeck")
+    @Operation(description = "delete from deck")
+    fun deleteWordFromDeck(@RequestParam idDeck: String, idWordAndStatId: String) {
+        deckService.deleteWordFromDeck(idDeck, idWordAndStatId)
+    }
+
     @PostMapping("/addUserToDeck")
     @Operation(description = "addUserToDeck")
     fun addUserToDeck(@RequestParam login: String, @RequestParam deckId: String) {
@@ -69,6 +76,20 @@ class DeckController(
     @Operation(description = "deleteUserFromDeck")
     fun deleteUserFromDeck(@RequestParam login: String, @RequestParam deckId: String) {
         deckService.deleteUserFromDeck(login, deckId)
+    }
+
+    @PutMapping("/copyDeck")
+    @Operation(description = "copyDeck")
+    fun copyDeck(principal: Principal, idDeck: String) {
+        deckService.copyDeck(principal, idDeck)
+    }
+
+    @GetMapping("/getAllPaging")
+    fun getAllPaging(
+        @RequestParam(required = false, defaultValue = "0") page: Int,
+        @RequestParam(required = false, defaultValue = "0") limit: Int
+    ): List<DeckData> {
+        return deckService.getAll(page, limit)
     }
 
 }

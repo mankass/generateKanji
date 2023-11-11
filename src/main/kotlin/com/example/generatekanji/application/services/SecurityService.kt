@@ -36,7 +36,7 @@ class SecurityService(
             val id = repository.save(newUser)
 
             val list: MutableList<UserData> = mutableListOf(id)
-            deckRepository.save(DeckData(user.login, null, null, list))
+            deckRepository.save(DeckData(user.login, true, null, null, list))
 
             return id.id
         }

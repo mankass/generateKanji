@@ -4,6 +4,7 @@ import com.example.generatekanji.domain.dto.WordData
 import com.example.generatekanji.domain.view.RandomTranslateWordView
 import com.example.generatekanji.domain.view.RandomWordView
 import com.example.generatekanji.infra.WordRepository
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 import kotlin.random.Random
@@ -79,5 +80,9 @@ class WordService(
     fun deleteWord(id: String) {
         wordRepository.deleteById(id)
 
+    }
+
+    fun getAllWords(page: Int, limit: Int): List<WordData> {
+        return wordRepository.findByOrderByWord(PageRequest.of(page, limit))
     }
 }

@@ -1,6 +1,7 @@
 package com.example.generatekanji.presentation.controllers
 
 import com.example.generatekanji.application.services.LeaderboardService
+import com.example.generatekanji.domain.view.LeaderboardDeckView
 import com.example.generatekanji.domain.view.LeaderboardUnitView
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -21,5 +22,11 @@ class LeaderboardController(
     @Operation(description = "Get leaderBoard")
     fun getLeaderboard(): List<LeaderboardUnitView> {
         return leaderboardService.getTable()
+    }
+
+    @GetMapping("/deckLeaderboard")
+    @Operation(description = "Get deckLeaderboard")
+    fun getDeckLeaderboard(): List<LeaderboardDeckView> {
+        return leaderboardService.getDeckLeaderboard()
     }
 }

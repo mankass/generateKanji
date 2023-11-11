@@ -13,7 +13,7 @@
     </q-select>
     <q-btn @click="search()"> search</q-btn>
     <!--    <q-btn @click="addWordToDeck(addWord.id)"> Add to deck</q-btn>-->
-    <q-btn @click="$emit('choose-word',addWord.id)"> Add to deck</q-btn>
+    <q-btn @click="$emit('choose-word', addWord.id)"> Add to deck</q-btn>
   </q-card>
 </template>
 
@@ -26,7 +26,6 @@ import {
   WordData,
 } from "../../../generated";
 
-
 const searchType = ref<string>();
 const result = ref<WordData[]>([]);
 const wordApi = new APIApi(
@@ -37,21 +36,15 @@ const wordApi = new APIApi(
   })
 );
 
-
 const emit = defineEmits<{
-  (e: 'choose-word'): number
-  (e: 'update', value: string): void
-}>()
+  (e: "choose-word"): number;
+  (e: "update", value: string): void;
+}>();
 
 const findOptions = ref<WordData[]>([]);
 const findWord = ref<string>("");
 const addWord = ref<WordData>();
 const options = ["Перевод", "Слово", "Транскрипция"];
-
-function addWordToDeck(id: string) {
-  // emit('choose-word',id)
-  // emit("choose-word", {id});
-}
 
 async function search() {
   switch (searchType.value) {

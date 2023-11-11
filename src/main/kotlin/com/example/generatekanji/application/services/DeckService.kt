@@ -6,8 +6,11 @@ import com.example.generatekanji.domain.view.DeckView
 import com.example.generatekanji.infra.DeckRepository
 import com.example.generatekanji.infra.UserRepository
 import com.example.generatekanji.infra.WordRepository
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import java.security.Principal
+import java.util.*
+import kotlin.NoSuchElementException
 
 @Service
 class DeckService(
@@ -32,8 +35,7 @@ class DeckService(
             } else {
                 deck.get().listWords?.add(
                     WordAndStat(
-                        word.get(), user,
-                        0, 0, 0, null
+                        word.get(), user, 0, 0, 0, null
                     )
                 )
             }
@@ -54,10 +56,10 @@ class DeckService(
 
     }
 
-    fun createDeck(name: String, principal: Principal) {
+    fun createDeck(name: String, principal: Principal): String? {
         val user = userRepository.findByLogin(principal.name)
-        deckRepository.save(DeckData(name, null, name, listUsers = mutableListOf(user)))
-
+        val id = deckRepository.save(DeckData(name, false, null, null, listUsers = mutableListOf(user)))
+        return id.id
     }
 
     fun updateDeck(idDeck: String) {
@@ -72,10 +74,36 @@ class DeckService(
     }
 
     fun addUserToDeck(login: String, deckId: String) {
-
         val deck = deckRepository.findById(deckId)
         val user = userRepository.findByLogin(login)
         deck.get().listUsers!!.add(user)
         deckRepository.save(deck.get())
+    }
+
+    fun getAll(): List<DeckData> {
+        return deckRepository.findAll().toList()
+    }
+
+    fun deleteWordFromDeck(idDeck: String, idWordAndStatId: String) {
+        val deck = deckRepository.findById(idDeck)
+
+        deck.get().listWords?.removeAll { x -> x.id.equals(idWordAndStatId) }
+        deckRepository.save(deck.get())
+
+    }
+
+    fun copyDeck(principal: Principal, idDeck: String) {
+        val deck = deckRepository.findById(idDeck).get()
+        val user = userRepository.findByLogin(principal.name)
+        deckRepository.save(DeckData(deck.name, false, deck.listWords, null, mutableListOf(user)))
+
+    }
+
+    fun getAll(page: Int, limit: Int): List<DeckData> {
+        return deckRepository.findByOrderByName(PageRequest.of(page, limit))
+    }
+
+    fun findById(id: String): Optional<DeckData> {
+        return deckRepository.findById(id)
     }
 }

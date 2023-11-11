@@ -159,6 +159,7 @@ async function getLeaderboard() {
     let temp = ref<LeaderboardUnitView>({
       login: "Empty",
       percentCorrect: 0,
+      idEntity: 0,
       slot: i,
     });
     leaderboard.value.push(temp.value);

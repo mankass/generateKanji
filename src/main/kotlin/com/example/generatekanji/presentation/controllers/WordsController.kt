@@ -44,10 +44,20 @@ class WordsController(
         }
     }
 
+    @GetMapping("/getAllPaging")
+    @Operation(description = "getAllByPagination")
+    fun getAllWordsByPagination(
+        @RequestParam(required = false, defaultValue = "0") page: Int,
+        @RequestParam(required = false, defaultValue = "0") limit: Int
+    ): List<WordData> {
+        return wordService.getAllWords(page, limit);
+    }
+
+
     @GetMapping("/day")
     @Operation(description = "Get all words by date")
     fun getAllWordsToday(localDate: LocalDate): List<WordData> {
-       return wordService.getWordsByDate(localDate)
+        return wordService.getWordsByDate(localDate)
     }
 
     @GetMapping("/getByWord")
