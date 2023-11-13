@@ -1,8 +1,8 @@
 package com.example.generatekanji.presentation.controllers
 
 import com.example.generatekanji.application.services.WordAndStatService
-import com.example.generatekanji.domain.dto.WordAndStat
 import com.example.generatekanji.domain.shared.WordAndStatShared
+import com.example.generatekanji.domain.view.WordAndStatView
 import com.example.generatekanji.domain.view.WordAndStatViewRandom
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -21,7 +21,7 @@ class WordAndStatController(
 
     @GetMapping("{id}")
     @Operation(description = "Get WordAndStat", security = [SecurityRequirement(name = "bearerAuth")])
-    fun getWordAndStat(@PathVariable id: String): Optional<WordAndStat> {
+    fun getWordAndStat(@PathVariable id: String): WordAndStatView {
         return wordAndStatService.findById(id)
     }
 

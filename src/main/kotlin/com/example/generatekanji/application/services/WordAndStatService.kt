@@ -5,6 +5,7 @@ import com.example.generatekanji.domain.dto.WordAndStat
 import com.example.generatekanji.domain.enums.AnswerStatus
 import com.example.generatekanji.domain.shared.WordAndStatShared
 import com.example.generatekanji.domain.view.QuizView
+import com.example.generatekanji.domain.view.WordAndStatView
 import com.example.generatekanji.domain.view.WordAndStatViewRandom
 import com.example.generatekanji.infra.UserRepository
 import com.example.generatekanji.infra.WordAndStatRepository
@@ -51,8 +52,8 @@ class WordAndStatService(
         )
     }
 
-    fun findById(id: String): Optional<WordAndStat> {
-        return wordAndStatRepository.findById(id)
+    fun findById(id: String): WordAndStatView {
+        return WordAndStatView(wordAndStatRepository.findById(id).get())
     }
 
     fun findAllWordAndStatToUser(userData: UserData): List<WordAndStat> {
