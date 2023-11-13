@@ -10,25 +10,37 @@ import org.springframework.data.annotation.CreatedDate
 import java.time.LocalDate
 
 @Entity
-@Schema(description = "wordData")
-class WordData(
+@Schema(description = "userData")
+class UserData(
+    @Schema(description = "login")
+    val login: String,
 
-    @Schema(description = "word")
-    val word: String,
+    @Schema(description = "name")
+    val fisrtName: String,
 
-    @Schema(description = "translate")
-    val translate: String,
+    @Schema(description = "surname")
+    val surname: String,
 
     @Schema(description = "createdData")
     @CreatedDate
     val createdData: LocalDate,
 
-    @Schema(description = "transcription")
-    val transcription: String?,
+    @Schema(description = "lastLoginDate")
+    val lastLogin: LocalDate,
+
+    @Schema(description = "role User")
+    val roles: MutableList<Roles>,
+
+    @Schema(description = "email")
+    val email: String,
+
+    @Schema(description = "password")
+    val password:String,
 
     @Id
     @Column(name = "id")
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    val id: String
+    val id: String?
+
 )
