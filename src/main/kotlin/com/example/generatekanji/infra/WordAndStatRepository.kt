@@ -9,20 +9,19 @@ import java.time.LocalDate
 
 @Repository
 interface WordAndStatRepository : CrudRepository<WordAndStat, String> {
-    fun findByLastUsingDateBetween(dateStart: LocalDate, dateEnd: LocalDate): List<WordAndStat>
 
-    fun findByCreatedDateAfterAndUserDataOrderByLastUsingDate(
+    fun findByCreatedDateAndUserDataOrderByLastUsingDate(
         dateAfter: LocalDate,
         userData: UserData
     ): List<WordAndStat>
 
     fun findByUserDataAndAndWordData(userData: UserData, wordData: WordData): WordAndStat?
 
-//    fun findByCreatedDateBetweenAndUserDataAndOrderByLastUsingDate(
-//        dateStart: LocalDate,
-//        dateEnd: LocalDate,
-//        userData: UserData
-//    ): List<WordAndStat>
+    fun findByCreatedDateBetweenAndUserDataOrderByLastUsingDate(
+        dateStart: LocalDate,
+        dateEnd: LocalDate,
+        userData: UserData
+    ): List<WordAndStat>
 
     fun findByUserData(userData: UserData): List<WordAndStat>
 

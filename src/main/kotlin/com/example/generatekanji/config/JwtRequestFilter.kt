@@ -27,7 +27,7 @@ class JwtRequestFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        var authHeader = request.getHeader("Authorization")
+        val authHeader = request.getHeader("Authorization")
         var username: String? = null
         var jwt: String? = null
 
@@ -35,7 +35,7 @@ class JwtRequestFilter(
             jwt = authHeader.substring(7)
             try {
                 username = jwtUtils.getUsername(jwt)
-                val user: UserData? = userRepository.findByLogin(username)
+                val user: UserData = userRepository.findByLogin(username)
 
             } catch (e: ExpiredJwtException) {
                 logger.info("Время жизни токена вышло")

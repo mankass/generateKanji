@@ -41,7 +41,8 @@ class SecurityConfig(val userService: UserService, val jwtRequestFilter: JwtRequ
                 .requestMatchers("/api/web-client/security/**").permitAll()
                 .requestMatchers("/api/security/**").permitAll()
                 .requestMatchers("/api/web-client/**").permitAll()
-                .requestMatchers("/v2/api-docs",
+                .requestMatchers(
+                    "/v2/api-docs",
                     "/v3/api-docs",
                     "/swagger-resources/**",
                     "/swagger-ui/**",
@@ -66,7 +67,7 @@ class SecurityConfig(val userService: UserService, val jwtRequestFilter: JwtRequ
     }
 
     @Bean
-    open fun corsConfigurationSource(): CorsConfigurationSource {
+    fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
         configuration.allowedOrigins = listOf("http://localhost:9000")
         configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")

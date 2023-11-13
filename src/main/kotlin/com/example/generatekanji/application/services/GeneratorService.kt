@@ -13,31 +13,34 @@ class GeneratorService(
     val userService: UserService
 
 ) {
-    fun generate(generatorTImeType: GeneratorTimeType, generatorType: GeneratorType): ByteArray {
+    fun generate(generatorTImeType: GeneratorTimeType, generatorType: GeneratorType, login: String): ByteArray {
+
         val user = userService.getByLogin("dan")
+//        val user = userService.getByLogin(login) TODO after add auth to swagger
 
         when (generatorTImeType) {
             GeneratorTimeType.TODAY -> return filesService.createByDate(LocalDate.now(), generatorType, user)
 
             GeneratorTimeType.YESTERDAY -> return filesService.createByDate(
                 LocalDate.now().minusDays(1),
+                LocalDate.now(),
                 generatorType,
                 user
             )
 
-            GeneratorTimeType.WEEK -> filesService.createByDate(
+            GeneratorTimeType.WEEK -> return filesService.createByDate(
+                LocalDate.now().minusWeeks(1),
                 LocalDate.now(),
-//                LocalDate.now().minusWeeks(1),
                 generatorType, user
             )
 
-            GeneratorTimeType.ALLMONTH -> filesService.createByDate(
+            GeneratorTimeType.ALLMONTH -> return filesService.createByDate(
+                LocalDate.now().minusMonths(1),
                 LocalDate.now(),
-//                LocalDate.now().minusMonths(1),
                 generatorType, user
             )
 
-            GeneratorTimeType.ALL -> filesService.createALl(generatorType, user)
+            GeneratorTimeType.ALL -> return filesService.createALl(generatorType, user)
         }
         return TODO()
     }

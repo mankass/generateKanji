@@ -115,17 +115,23 @@ class WordAndStatService(
     }
 
     fun findByDate(localDate: LocalDate, userData: UserData): List<WordAndStat> {
-        return wordAndStatRepository.findByCreatedDateAfterAndUserDataOrderByLastUsingDate(localDate, userData)
+        return wordAndStatRepository.findByCreatedDateAndUserDataOrderByLastUsingDate(localDate, userData)
     }
-
 
     fun getAllByUser(userData: UserData): List<WordAndStat> {
         return wordAndStatRepository.findByUserData(userData)
     }
 
-    fun test(): List<WordAndStat> {
-        return wordAndStatRepository.findByCreatedDateBetween(LocalDate.now().minusDays(20), LocalDate.now())
-
+    fun findByDateBetween(
+        localDateStart: LocalDate,
+        localDateEnd: LocalDate,
+        userData: UserData
+    ): Collection<WordAndStat> {
+        return wordAndStatRepository.findByCreatedDateBetweenAndUserDataOrderByLastUsingDate(
+            localDateStart,
+            localDateEnd,
+            userData
+        )
     }
 
 }

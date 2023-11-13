@@ -1,7 +1,5 @@
 package com.example.generatekanji.presentation.controllers
 
-import com.example.generatekanji.application.services.TableService
-import com.example.generatekanji.application.services.TranslatePageService
 import com.example.generatekanji.application.services.WordService
 import com.example.generatekanji.application.views.WordView
 import com.example.generatekanji.domain.dto.WordData
@@ -35,8 +33,6 @@ import kotlin.io.path.Path
 class WordsController(
     val wordRepository: WordRepository,
     val wordService: WordService,
-    val tableService: TableService,
-    val translatePageService: TranslatePageService
 ) {
     fun <T> randomGenerator(words: List<T>) = sequence {
         while (true) {
@@ -88,15 +84,6 @@ class WordsController(
     @Operation(description = "Get all today words")
     fun generateToday(date: LocalDate){
         wordService.generateWordsByDate(date)
-    }
-
-
-    @PostMapping("/generateAll")
-    fun generateAll(): ResponseEntity<String> {
-        val listWordsFromDb = randomGenerator(getAllWords()).take(60).toList()
-        val stringPair = tableService.createTable(listWordsFromDb,"all")
-        translatePageService.createTranslatePage(Pair(stringPair.first, listWordsFromDb))
-        return ResponseEntity.ok(stringPair.first)
     }
 
 
