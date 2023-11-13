@@ -25,7 +25,7 @@ class DeckData(
     val id: String?,
 
     @Schema(description = "listUsersOwners")
-    @ManyToMany(cascade = [CascadeType.DETACH])
+    @ManyToMany(cascade = [CascadeType.DETACH], fetch = FetchType.EAGER)
     var listUsers: MutableList<UserData>?
 
 )

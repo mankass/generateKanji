@@ -9,6 +9,7 @@ import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
+import org.springframework.security.authorization.AuthenticatedAuthorizationManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -29,12 +30,21 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
-class SecurityConfig(val userService: UserService, val jwtRequestFilter: JwtRequestFilter) {
+class SecurityConfig(
+    val userService: UserService,
+    val jwtRequestFilter: JwtRequestFilter
+) {
 
     @Bean
-    fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
+    fun securityFilterChain(
+        http: HttpSecurity,
+        userSecurity: UserSecurity,
+        wordAndStatSecurity: WordAndStatSecurity
+    ): SecurityFilterChain {
         http.authorizeHttpRequests { auth ->
             auth.requestMatchers("/signin", "/signup").permitAll()
+                .requestMatchers("/api/web-client/deck/{deckId}/**").access(userSecurity)
+                .requestMatchers("/api/web-client/wordAndStat/{wordAndStatId}**").access(wordAndStatSecurity)
                 .requestMatchers("/api/web-client/wordAndStat/**").authenticated()
                 .requestMatchers("/api/web-client/quiz/**").authenticated()
                 .requestMatchers("/api/web-client/deck/**").authenticated()

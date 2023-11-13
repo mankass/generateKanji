@@ -21,16 +21,16 @@ class DeckController(
     val deckRepository: DeckRepository, val deckService: DeckService
 ) {
 
-    @GetMapping
-    @Operation(description = "Get deck")
-    fun getDeck(id: String): Optional<DeckData> {
+    @GetMapping("/{id}")
+    @Operation(description = "Get deck", security = [SecurityRequirement(name = "bearerAuth")])
+    fun getDeck(@PathVariable id: String): Optional<DeckData> {
         return deckService.findById(id)
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @Operation(description = "Update deck")
-    fun updateDeck(@RequestParam idDeck: String): ResponseEntity<String> {
-        deckService.updateDeck(idDeck)
+    fun updateDeck(@PathVariable id: String): ResponseEntity<String> {
+        deckService.updateDeck(id)
         return ResponseEntity.ok().build()
     }
 
@@ -41,10 +41,10 @@ class DeckController(
         return HttpStatus.OK
     }
 
-    @DeleteMapping
+    @DeleteMapping("{id}")
     @Operation(description = "Delete deck")
-    fun delete(id: String) {
-        deckRepository.deleteById(id)
+    fun delete(@PathVariable id: String) {
+        deckService.deleteDeck(id)
     }
 
     @GetMapping("/get-all")

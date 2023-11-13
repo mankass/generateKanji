@@ -108,4 +108,8 @@ class DeckService(
     fun findById(id: String): Optional<DeckData> {
         return deckRepository.findById(id)
     }
+
+    fun deleteDeck(id: String) {
+        deckRepository.deleteById(id)
+    }
 }

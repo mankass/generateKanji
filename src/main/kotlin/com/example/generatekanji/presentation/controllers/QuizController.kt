@@ -23,9 +23,7 @@ class QuizController(
         @RequestParam quizType: TypeQuiz,
         principal: Principal?
     ): QuizView {
-        //TODO fix !!not null
-
-        return quizService.getQuizByType(quizType, principal)!!
+        return quizService.getQuizByType(quizType, principal)
     }
 
     @Operation(description = "createByQuiz", security = [SecurityRequirement(name = "bearerAuth")])

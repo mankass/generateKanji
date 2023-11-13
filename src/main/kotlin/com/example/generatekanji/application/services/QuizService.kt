@@ -55,7 +55,7 @@ class QuizService(
 
     }
 
-    fun getQuizByType(quizType: TypeQuiz, principal: Principal?): QuizView? {
+    fun getQuizByType(quizType: TypeQuiz, principal: Principal?): QuizView {
         return when (quizType) {
             TypeQuiz.TRANSLATE -> getTranslateQuiz()
             TypeQuiz.KANJI -> getKanjiQuiz()

@@ -22,7 +22,8 @@ class GeneratorController(
     @GetMapping("/all-zip", produces = ["application/zip"])
     fun getAllInZip(
         @RequestParam(required = true) generatorTimeType: GeneratorTimeType,
-        @RequestParam(required = true) generatorType: GeneratorType, principal: Principal
+        @RequestParam(required = true) generatorType: GeneratorType,
+        principal: Principal
     ): ResponseEntity<ByteArrayResource> {
         val byte = generatorService.generate(generatorTimeType, generatorType, principal.name)
 

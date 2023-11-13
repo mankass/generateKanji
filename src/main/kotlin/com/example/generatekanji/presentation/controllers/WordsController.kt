@@ -63,24 +63,6 @@ class WordsController(
         return wordService.getWordsByTranslate(string)
     }
 
-    @GetMapping("/random")
-    @Operation(description = "Get Random")
-    fun getRandomWord(): RandomWordView {
-        return wordService.getRandom()
-    }
-
-    @GetMapping("/translate-quiz")
-    @Operation(description = "Get random translate quiz")
-    fun getRandomTranslateQuiz(): RandomTranslateWordView {
-        return wordService.getRandomTranslateQuiz()
-    }
-
-    @GetMapping("/generate-today")
-    @Operation(description = "Get all today words")
-    fun generateToday(date: LocalDate) {
-        wordService.generateWordsByDate(date)
-    }
-
     @GetMapping("/get-all")
     @Operation(description = "getAllWords")
     fun getAllWords(): List<WordData> {
