@@ -15,7 +15,9 @@ interface WordAndStatRepository : CrudRepository<WordAndStat, String> {
         userData: UserData
     ): List<WordAndStat>
 
-    fun findByUserDataAndAndWordData(userData: UserData, wordData: WordData): WordAndStat?
+    fun findByUserDataAndWordData(userData: UserData, wordData: WordData): WordAndStat?
+
+    fun findByUserDataOrderByWrongAttempts(userData: UserData): List<WordAndStat>
 
     fun findByCreatedDateBetweenAndUserDataOrderByLastUsingDate(
         dateStart: LocalDate,

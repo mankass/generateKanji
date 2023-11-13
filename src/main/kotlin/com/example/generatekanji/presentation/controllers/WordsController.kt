@@ -34,11 +34,6 @@ class WordsController(
     val wordRepository: WordRepository,
     val wordService: WordService,
 ) {
-    fun <T> randomGenerator(words: List<T>) = sequence {
-        while (true) {
-            words.shuffled().forEach { yield(it) }
-        }
-    }
 
     @GetMapping("/getAllPaging")
     @Operation(description = "getAllByPagination")
@@ -70,22 +65,21 @@ class WordsController(
 
     @GetMapping("/random")
     @Operation(description = "Get Random")
-    fun getRandomWord(): RandomWordView{
-         return wordService.getRandom()
+    fun getRandomWord(): RandomWordView {
+        return wordService.getRandom()
     }
 
     @GetMapping("/translate-quiz")
     @Operation(description = "Get random translate quiz")
-    fun getRandomTranslateQuiz():RandomTranslateWordView{
+    fun getRandomTranslateQuiz(): RandomTranslateWordView {
         return wordService.getRandomTranslateQuiz()
     }
 
     @GetMapping("/generate-today")
     @Operation(description = "Get all today words")
-    fun generateToday(date: LocalDate){
+    fun generateToday(date: LocalDate) {
         wordService.generateWordsByDate(date)
     }
-
 
     @GetMapping("/get-all")
     @Operation(description = "getAllWords")
@@ -101,59 +95,20 @@ class WordsController(
     @PostMapping("/word")
     fun createWord(@Valid @RequestBody wordView: WordView) {
         val wordData =
-            WordData(wordView.word, wordView.translate, LocalDate.now(),wordView.transcription, UUID.randomUUID().toString())
+            WordData(
+                wordView.word,
+                wordView.translate,
+                LocalDate.now(),
+                wordView.transcription,
+                UUID.randomUUID().toString()
+            )
         wordRepository.save(wordData)
-    }
-
-    @GetMapping("/getAnswers")
-    @Produces("document/docx")
-    fun downloadAnswers(string: String): ResponseEntity<ByteArrayResource> {
-        val file= Path("C:\\Users\\Даниил\\IdeaProjects\\generateKanji_new\\183f999e-47bd-4591-a098-79e6c3885205.docx")
-      return ResponseEntity.ok()
-          .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\""+file.fileName+"\"").body(ByteArrayResource(Files.readAllBytes(file)))
-    }
-
-    @GetMapping("/getWords")
-    @Produces("document/docx")
-    fun downloadWords(string: String): ResponseEntity<ByteArrayResource> {
-        val file = Path("C:\\Users\\Даниил\\IdeaProjects\\generateKanji_new\\183f999e-47bd-4591-a098-79e6c3885205.xlsx")
-        return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.fileName + "\"")
-            .body(ByteArrayResource(Files.readAllBytes(file)))
     }
 
     @DeleteMapping
     @Operation(description = "deleteWord")
     fun deleteWord(@RequestParam id: String) {
         wordService.deleteWord(id)
-    }
-
-    @GetMapping("/getAllToday")
-    @Operation(description = "downloadToday")
-    fun downloadAllToday(): ResponseEntity<ByteArrayResource> {
-        val list = listOf(
-            "C:\\Users\\Даниил\\IdeaProjects\\generateKanji_new\\3bfbad49-ef8b-408c-9ea8-7072dd6de9c7.docx",
-            "C:\\Users\\Даниил\\IdeaProjects\\generateKanji_new\\allb0a960ae-7968-4422-9301-713216190b93.xlsx"
-        )
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        val bufferedOutputStream = BufferedOutputStream(byteArrayOutputStream)
-        val zipOutputStream = ZipOutputStream(bufferedOutputStream)
-
-
-        for (string in list) {
-            val fileSystemResource = FileSystemResource(string)
-            val zip: ZipEntry = ZipEntry(fileSystemResource.filename)
-            zip.size = fileSystemResource.contentLength()
-            zip.time = System.currentTimeMillis()
-            zipOutputStream.putNextEntry(zip)
-            StreamUtils.copy(fileSystemResource.inputStream, zipOutputStream)
-            zipOutputStream.closeEntry()
-        }
-        zipOutputStream.finish()
-        val byteArrayResource=ByteArrayResource(byteArrayOutputStream.toByteArray())
-
-        return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\""+"file.zip"+"\"").body(byteArrayResource)
     }
 
 }

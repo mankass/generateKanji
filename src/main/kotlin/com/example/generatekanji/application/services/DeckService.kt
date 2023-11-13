@@ -24,7 +24,7 @@ class DeckService(
         val deck = deckRepository.findById(idDeck)
         val word = wordRepository.findById(wordId)
         val user = userRepository.findByLogin(principal.name)
-        val wordAndStat = wordAndStatService.wordAndStatRepository.findByUserDataAndAndWordData(
+        val wordAndStat = wordAndStatService.wordAndStatRepository.findByUserDataAndWordData(
             user, word.get()
         )
         if (deck.get().listUsers!!.any { it == user }) {

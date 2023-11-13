@@ -1,6 +1,7 @@
 package com.example.generatekanji.presentation.controllers
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
@@ -16,7 +17,7 @@ import java.security.Principal
 class UtilController {
 
     @GetMapping("/whoAmI")
-    @Operation(description = "Who Am i")
+    @Operation(description = "Who Am i", security = [SecurityRequirement(name = "bearerAuth")])
     fun whoAmI(principal: Principal): String? {
         return principal.name
     }

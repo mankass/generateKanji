@@ -22,11 +22,10 @@ class WordAndStatService(
     val userRepository: UserRepository,
     val wordRepository: WordRepository,
     val wordService: WordService,
-    val utils: ListUtills
 ) {
     fun save(wordAndStatShared: WordAndStatShared, principal: Principal) {
         val user = userRepository.findByLogin(principal.name)
-        val wordAndStat = wordAndStatRepository.findByUserDataAndAndWordData(user, wordAndStatShared.wordData)
+        val wordAndStat = wordAndStatRepository.findByUserDataAndWordData(user, wordAndStatShared.wordData)
 
         if (wordAndStat != null) {
             when (wordAndStatShared.answerStatus) {
@@ -132,6 +131,10 @@ class WordAndStatService(
             localDateEnd,
             userData
         )
+    }
+
+    fun getWordForQuiz(userData: UserData): WordAndStat? {
+        return wordAndStatRepository.findByUserDataOrderByWrongAttempts(userData).lastOrNull()
     }
 
 }

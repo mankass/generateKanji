@@ -5,6 +5,7 @@ import com.example.generatekanji.domain.dto.DeckData
 import com.example.generatekanji.domain.view.DeckView
 import com.example.generatekanji.infra.DeckRepository
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -34,7 +35,7 @@ class DeckController(
     }
 
     @PostMapping
-    @Operation(description = "Crate deck")
+    @Operation(description = "Crate deck", security = [SecurityRequirement(name = "bearerAuth")])
     fun createDeck(@RequestParam name: String, principal: Principal): HttpStatus {
         deckService.createDeck(name, principal)
         return HttpStatus.OK
@@ -47,14 +48,14 @@ class DeckController(
     }
 
     @GetMapping("/get-all")
-    @Operation(description = "get all decks")
+    @Operation(description = "get all decks", security = [SecurityRequirement(name = "bearerAuth")])
     fun getALlDecks(principal: Principal): List<DeckView> {
         println(principal)
         return deckService.getALl(principal)
     }
 
     @PutMapping("/add-word-toDeck")
-    @Operation(description = "add word to deck")
+    @Operation(description = "add word to deck", security = [SecurityRequirement(name = "bearerAuth")])
     fun addWordToDeck(@RequestParam idDeck: String, @RequestParam wordId: String, principal: Principal) {
         deckService.addWordToDeck(idDeck, wordId, principal)
     }
@@ -78,7 +79,7 @@ class DeckController(
     }
 
     @PutMapping("/copyDeck")
-    @Operation(description = "copyDeck")
+    @Operation(description = "copyDeck", security = [SecurityRequirement(name = "bearerAuth")])
     fun copyDeck(principal: Principal, idDeck: String) {
         deckService.copyDeck(principal, idDeck)
     }
