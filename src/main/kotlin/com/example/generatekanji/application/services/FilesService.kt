@@ -4,15 +4,21 @@ import com.example.generatekanji.domain.dto.UserData
 import com.example.generatekanji.domain.dto.WordAndStat
 import com.example.generatekanji.domain.dto.WordData
 import com.example.generatekanji.domain.enums.GeneratorType
+import com.example.generatekanji.utils.putFile
 import com.grapecity.documents.excel.HorizontalAlignment
 import com.grapecity.documents.excel.IRange
 import com.grapecity.documents.excel.Workbook
 import org.apache.poi.xwpf.usermodel.XWPFDocument
 import org.springframework.stereotype.Service
-import java.io.File
-import java.io.FileOutputStream
+import org.springframework.web.client.HttpClientErrorException.BadRequest
+import java.io.*
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 import java.time.LocalDate
 import java.util.*
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 @Service
 class FilesService(
@@ -82,13 +88,29 @@ class FilesService(
         doc.close()
     }
 
-    fun create(words: List<WordAndStat>, generatorType: GeneratorType, name: String) {
-        val nameDir = name + LocalDate.now().toString()
-        createTableWordAndStat(words, generatorType, nameDir)
-        createAnswersWordAndStat(words, generatorType, nameDir)
+    fun create(words: List<WordAndStat>, generatorType: GeneratorType, name: String): ByteArray {
+
+        val buffGeneratedTable = createTableWordAndStat(words, generatorType, name)
+
+        val answersDocBuff = createAnswersWordAndStat(words, generatorType, name)
+
+        val zipByteArrayOutputStream = ByteArrayOutputStream()
+
+        ZipOutputStream(zipByteArrayOutputStream).use {
+            it.putFile("answers.docx", answersDocBuff)
+            it.putFile("generatedTable.xlsx", buffGeneratedTable)
+        }
+        //TODO try with resoursec
+
+        return zipByteArrayOutputStream.toByteArray()
     }
 
-    private fun createAnswersWordAndStat(wordList: List<WordAndStat>, generatorType: GeneratorType, nameDir: String) {
+    private fun createAnswersWordAndStat(
+        wordList: List<WordAndStat>,
+        generatorType: GeneratorType,
+        nameDir: String
+    ): ByteArray {
+
         val doc = XWPFDocument()
         val paragraph = doc.createParagraph()
         val run = paragraph.createRun()
@@ -122,18 +144,22 @@ class FilesService(
             }
 
         }
-        val uuid = UUID.randomUUID();
         run.fontSize = 16
-        val fileOutputStream = FileOutputStream("${nameDir}${uuid.toString()}.docx")
-        doc.write(fileOutputStream)
-        fileOutputStream.close()
+//        val fileOutputStream = FileOutputStream("src//main/tmp/tmp-${nameDir}/${nameDir}.docx")
+
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        doc.write(byteArrayOutputStream)
+
+//        fileOutputStream.close()
         doc.close()
+        return byteArrayOutputStream.toByteArray()
     }
 
-    private fun createTableWordAndStat(wordList: List<WordAndStat>, generatorType: GeneratorType, nameDir: String) {
-
-        val directoryName = UUID.randomUUID().toString().substring(1, 20)
-        val path = "C:\\Users\\Даниил\\IdeaProjects\\generateKanji_new\\src\\main\\resources\\files\\${directoryName}"
+    private fun createTableWordAndStat(
+        wordList: List<WordAndStat>,
+        generatorType: GeneratorType,
+        name: String
+    ): ByteArray {
         val workbook = Workbook()
         val worksheet = workbook.worksheets.get(0)
 
@@ -165,23 +191,37 @@ class FilesService(
                 GeneratorType.KANJI_TRANSCRIPTION -> iRange.value = "$count  " + wordList[count].wordData.word
             }
         }
-        workbook.save("//$path.xlsx")
+        val outputStream = ByteArrayOutputStream()
+        workbook.save(outputStream)
+        return outputStream.toByteArray()
+
     }
 
-    fun createByDate(localDate: LocalDate, generatorType: GeneratorType, userData: UserData) {
-        val words = wordAndStatService.findByDate(localDate, userData)
-        randomGenerator(words)
-        val wordsALl = wordAndStatService.getAll().toList()
-        var list = mutableListOf<WordAndStat>()
-        list.addAll(words)
-        list.addAll(words)
-        list.addAll(words)
-        while (list.size < 60) {
-            list.addAll(words)
+    fun createByDate(localDate: LocalDate, generatorType: GeneratorType, userData: UserData): ByteArray {
+        var words = wordAndStatService.findByDate(localDate, userData)
+        val mutableList = mutableListOf<WordAndStat>()
+        if (words.isEmpty()) {
+            throw Exception("Нет слов")
+        } else {
+            while (mutableList.size < 60) {
+                mutableList.addAll(words)
+            }
+            return create(mutableList.subList(0, 60), generatorType, userData.login)
         }
+    }
 
-        create(list, generatorType, userData.login)
 
+    fun createALl(generatorType: GeneratorType, userData: UserData) {
+        val words = wordAndStatService.getAllByUser(userData)
+        val mutableList = mutableListOf<WordAndStat>()
+        if (words.isEmpty()) {
+            throw Exception("Нет слов")
+        } else {
+            while (mutableList.size < 60) {
+                mutableList.addAll(words)
+            }
+            create(mutableList.subList(0, 60), generatorType, userData.login)
+        }
     }
 
 }

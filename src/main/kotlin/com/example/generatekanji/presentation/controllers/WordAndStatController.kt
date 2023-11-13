@@ -56,4 +56,10 @@ class WordAndStatController(
     }
 
 
+    @GetMapping("/test")
+    @Operation()
+    fun test(): List<WordAndStat> {
+        return wordAndStatService.test()
+    }
+
 }

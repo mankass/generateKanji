@@ -33,18 +33,20 @@ class WordAndStatService(
                 AnswerStatus.CORRECT -> wordAndStat.correctAttempts += 1
                 AnswerStatus.INCORRECT -> wordAndStat.wrongAttempts += 1
             }
-            wordAndStat.percentCorrect = (wordAndStat.correctAttempts) /
-                    (wordAndStat.correctAttempts + wordAndStat.wrongAttempts)
+            wordAndStat.percentCorrect =
+                (wordAndStat.correctAttempts) / (wordAndStat.correctAttempts + wordAndStat.wrongAttempts)
             wordAndStatRepository.save(wordAndStat)
         }
 
-
         wordAndStatRepository.save(
             WordAndStat(
-                wordAndStatShared.wordData, user,
-                wordAndStatShared.wrongAttempts, wordAndStatShared.correctAttempts,
+                wordAndStatShared.wordData,
+                user,
+                wordAndStatShared.wrongAttempts,
+                wordAndStatShared.correctAttempts,
                 (wordAndStatShared.wrongAttempts / wordAndStatShared.correctAttempts),
-                LocalDate.now(), LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
                 null
             )
         )
@@ -71,10 +73,13 @@ class WordAndStatService(
         )
         return WordAndStatViewRandom(
             wordAndStat.id!!,
-            wordAndStat.wordData.word, wordAndStat.wordData.translate,
+            wordAndStat.wordData.word,
+            wordAndStat.wordData.translate,
             wordAndStat.wordData.transcription,
-            listAnswers, wordAndStat.wrongAttempts,
-            wordAndStat.correctAttempts, wordAndStat.percentCorrect
+            listAnswers,
+            wordAndStat.wrongAttempts,
+            wordAndStat.correctAttempts,
+            wordAndStat.percentCorrect
         )
     }
 
@@ -84,8 +89,7 @@ class WordAndStatService(
 
         wordAndStatRepository.save(
             WordAndStat(
-                word.get(),
-                user, 0, 1, 100, LocalDate.now(), LocalDate.now(), null
+                word.get(), user, 0, 1, 100, LocalDate.now(), LocalDate.now(), null
             )
         )
 
@@ -98,7 +102,9 @@ class WordAndStatService(
             wordAndStat.correctAttempts / (wordAndStat.correctAttempts + wordAndStat.wrongAttempts).toDouble() * 100
         wordAndStatRepository.save(
             WordAndStat(
-                wordAndStatId.wordData, user, wordAndStat.wrongAttempts,
+                wordAndStatId.wordData,
+                user,
+                wordAndStat.wrongAttempts,
                 wordAndStat.correctAttempts,
                 (percent.toInt()),
                 wordAndStatId.createdDate,
@@ -109,14 +115,17 @@ class WordAndStatService(
     }
 
     fun findByDate(localDate: LocalDate, userData: UserData): List<WordAndStat> {
-        val list = wordAndStatRepository.findByUserDataAndCreatedDate(
-            userData, localDate
-        )
-        utils.randomGenerator(list)
-        return list
+        return wordAndStatRepository.findByCreatedDateAfterAndUserDataOrderByLastUsingDate(localDate, userData)
     }
 
-    fun getAll(): MutableIterable<WordAndStat> {
-        return wordAndStatRepository.findAll()
+
+    fun getAllByUser(userData: UserData): List<WordAndStat> {
+        return wordAndStatRepository.findByUserData(userData)
     }
+
+    fun test(): List<WordAndStat> {
+        return wordAndStatRepository.findByCreatedDateBetween(LocalDate.now().minusDays(20), LocalDate.now())
+
+    }
+
 }
